@@ -1,9 +1,9 @@
 :root {
   --body-bg: #202123;
-  --msger-bg: #444654;
+  --msger-bg: #6e6e80;
   --border: 2px solid #1e1e1e;
-  --left-msg-bg: #8b8da9;
-  --right-msg-bg: #16171c;
+  --left-msg-bg: #ffce25;
+  --right-msg-bg: #255dff;
 }
 
 html {

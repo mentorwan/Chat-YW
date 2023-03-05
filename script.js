@@ -18,9 +18,10 @@ const msgerSendBtn = get(".msger-send-btn");
 
 // Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "./chatgpt.svg";
-const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
-const BOT_NAME = "ChatGPT";
-const PERSON_NAME = "You";
+//const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
+const PERSON_IMG = "./mentorwan.jpeg"
+const BOT_NAME = "Assistant";
+const PERSON_NAME = "Me";
 
 // Function to delete chat history records for a user ID using the API
 function deleteChatHistory(userId) {
@@ -92,7 +93,17 @@ function appendMessage(name, img, side, text, id) {
   `;
 
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
-    msgerChat.scrollTop += 500;
+    //msgerChat.scrollTop += 500;
+    
+    //function to scroll the chat window to the bottom
+    //msgerChat.scrollTop = msgerChat.scrollHeight + 500;
+    //msgerChat.scrollTop = msgerChat.pageYOffset;
+    
+    msgerChat.scrollTo({
+    top: msgerChat.scrollHeight,
+    behavior: "smooth"
+    });
+    
 }
 
 function sendMsg(msg) {

@@ -36,10 +36,10 @@ $msg = $result->fetchArray(SQLITE3_ASSOC)['human'];
 $history[] = [ROLE => USER, CONTENT => $msg];
 
 $opts = [
-    'model' => 'gpt-3.5-turbo',
+    'model' => 'gpt-3.5-turbo-0301',
     'messages' => $history,
     'temperature' => 1.0,
-    'max_tokens' => 100,
+    'max_tokens' => 2048,
     'frequency_penalty' => 0,
     'presence_penalty' => 0,
     'stream' => true
