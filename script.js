@@ -93,16 +93,14 @@ function appendMessage(name, img, side, text, id) {
   `;
 
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
-    //msgerChat.scrollTop += 500;
+    msgerChat.scrollTop = msgerChat.scrollHeight + 100;
     
     //function to scroll the chat window to the bottom
     //msgerChat.scrollTop = msgerChat.scrollHeight + 500;
-    //msgerChat.scrollTop = msgerChat.pageYOffset;
+     
     
-    msgerChat.scrollTo({
-    top: msgerChat.scrollHeight,
-    behavior: "smooth"
-    });
+    console.log("scrollTop location:", msgerChat.scrollTop);
+    
     
 }
 
@@ -118,9 +116,12 @@ function sendMsg(msg) {
             const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
+            
+            
 
             eventSource.onmessage = function (e) {
                 if (e.data == "[DONE]") {
+                	  msgerChat.scrollTop = msgerChat.scrollHeight;
                     msgerSendBtn.disabled = false
                     eventSource.close();
                 } else {
@@ -128,6 +129,7 @@ function sendMsg(msg) {
                     if (txt !== undefined) {
                         div.innerHTML += txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
                     }
+                    console.log("Response Text is ", txt);
                 }
             };
             eventSource.onerror = function (e) {
