@@ -21,7 +21,7 @@
 <section class="msger">
     <header class="msger-header">
         <div class="msger-header-title">
-            <i class="fas fa-comments"></i> MENTORWAN
+            <i class="fas fa-comments"></i> CHAT SESSION
             &nbsp;| ID: <input type="text" id="id" hidden> <span class="id_session"></span>
         </div>
         <div class="msger-header-options">

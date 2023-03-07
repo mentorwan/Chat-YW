@@ -19,7 +19,7 @@ const msgerSendBtn = get(".msger-send-btn");
 // Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "./chatgpt.svg";
 //const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
-const PERSON_IMG = "./mentorwan.jpeg"
+const PERSON_IMG = "./question.png"
 const BOT_NAME = "Assistant";
 const PERSON_NAME = "Me";
 
@@ -124,12 +124,13 @@ function sendMsg(msg) {
                 	  msgerChat.scrollTop = msgerChat.scrollHeight;
                     msgerSendBtn.disabled = false
                     eventSource.close();
+                    console.log("Response Text is ", e.data);
                 } else {
                     let txt = JSON.parse(e.data).choices[0].delta.content
                     if (txt !== undefined) {
                         div.innerHTML += txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
                     }
-                    console.log("Response Text is ", txt);
+                    
                 }
             };
             eventSource.onerror = function (e) {
@@ -191,3 +192,13 @@ function deleteAllCookies() {
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
 }
+
+function formatCodeBlocks(text) {
+  const codeBlockRegex = /```([\s\S]+?)```/g;
+  return text.replace(codeBlockRegex, '<pre><code>$1</code></pre>');
+}
+
+const textWithCodeBlock = 'Here is some text with a code block:\n```\nconst message = "Hello, world!";\nconsole.log(message);\n```\nAnd here is some more text.';
+const formattedText = formatCodeBlocks(textWithCodeBlock);
+
+console.log(formattedText);
