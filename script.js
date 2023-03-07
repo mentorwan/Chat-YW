@@ -17,11 +17,11 @@ const msgerSendBtn = get(".msger-send-btn");
 
 
 // Icons made by Freepik from www.flaticon.com
-const BOT_IMG = "./chatgpt.svg";
+const BOT_IMG = "./ChatGPT.png";
 //const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
 const PERSON_IMG = "./question.png"
 const BOT_NAME = "Assistant";
-const PERSON_NAME = "Me";
+const PERSON_NAME = "Client";
 
 // Function to delete chat history records for a user ID using the API
 function deleteChatHistory(userId) {

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Chat GPT</title>
+    <title>ChatGPT 3.5 turbo</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -21,8 +21,7 @@
 <section class="msger">
     <header class="msger-header">
         <div class="msger-header-title">
-            <i class="fas fa-comments"></i> CHAT SESSION
-            &nbsp;| ID: <input type="text" id="id" hidden> <span class="id_session"></span>
+            <i class="fas fa-comments"></i> SESSION ID: <input type="text" id="id" hidden> <span class="id_session"></span>
         </div>
         <div class="msger-header-options">
             <button id="delete-button">Delete History</button>
