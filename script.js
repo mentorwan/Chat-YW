@@ -93,11 +93,8 @@ function appendMessage(name, img, side, text, id) {
   `;
 
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
-    msgerChat.scrollTop = msgerChat.scrollHeight + 100;
     
-    //function to scroll the chat window to the bottom
-    //msgerChat.scrollTop = msgerChat.scrollHeight + 500;
-     
+    scrollToBottom();
     
     console.log("scrollTop location:", msgerChat.scrollTop);
     
@@ -124,7 +121,6 @@ function sendMsg(msg) {
                 	  msgerChat.scrollTop = msgerChat.scrollHeight;
                     msgerSendBtn.disabled = false
                     eventSource.close();
-                    console.log("Response Text is ", e.data);
                 } else {
                     let txt = JSON.parse(e.data).choices[0].delta.content
                     if (txt !== undefined) {
@@ -202,3 +198,13 @@ const textWithCodeBlock = 'Here is some text with a code block:\n```\nconst mess
 const formattedText = formatCodeBlocks(textWithCodeBlock);
 
 console.log(formattedText);
+
+
+// Function to scroll to the bottom of the messages
+function scrollToBottom() {
+  // Calculate the target scroll position
+  const targetScrollTop = msgerChat.scrollHeight - msgerChat.clientHeight;
+
+  // Animate the scrollTop property
+  msgerChat.animate({ scrollTop: targetScrollTop }, 300);
+}

@@ -10,6 +10,16 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-85F61RZYRT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-85F61RZYRT');
+</script>
+
 <body>
 <!-- History feature
 <div class="sidebar">
