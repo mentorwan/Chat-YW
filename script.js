@@ -17,7 +17,7 @@ const msgerSendBtn = get(".msger-send-btn");
 
 
 // Icons made by Freepik from www.flaticon.com
-const BOT_IMG = "./ChatGPT.png";
+const BOT_IMG = "./chatgpt.svg";
 //const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
 const PERSON_IMG = "./question.png"
 const BOT_NAME = "Assistant";

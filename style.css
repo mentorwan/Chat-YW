@@ -115,6 +115,10 @@ body {
   border-bottom-left-radius: 0;
 }
 
+.left-msg .msg-img {
+  margin: 0 10px 0 0;
+}
+
 .right-msg {
   flex-direction: row-reverse;
 }
