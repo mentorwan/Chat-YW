@@ -57,7 +57,7 @@ body {
 }
 
 .msger-chat::-webkit-scrollbar {
-  width: 6px;
+  width: 0px;
 }
 
 .msger-chat::-webkit-scrollbar-track {
@@ -213,7 +213,7 @@ body {
      cursor: auto;
 }
 #delete-button {
-  background: none!important;
+  background: indigo;
   border: none;
   padding: 0!important;
   /*optional*/
