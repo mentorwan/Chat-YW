@@ -57,7 +57,7 @@ body {
 }
 
 .msger-chat::-webkit-scrollbar {
-  width: 0px;
+  width: 10px;
 }
 
 .msger-chat::-webkit-scrollbar-track {
@@ -89,7 +89,7 @@ body {
 }
 
 .msg-bubble {
-  max-width: 400px;
+  max-width: 380px;
   padding: 15px;
   border-radius: 15px;
   background: var(--left-msg-bg);
@@ -112,7 +112,7 @@ body {
 }
 
 .left-msg .msg-bubble {
-  border-bottom-left-radius: 0;
+  border-bottom-left-radius: 10px;
 }
 
 .left-msg .msg-img {
