@@ -1,9 +1,9 @@
 :root {
-  --body-bg: #202123;
-  --msger-bg: #6e6e80;
+  --body-bg: bisque;
+  --msger-bg: slategrey;
   --border: 2px solid #1e1e1e;
-  --left-msg-bg: #ffce25;
-  --right-msg-bg: #255dff;
+  --left-msg-bg: mintcream;
+  --right-msg-bg: #3f51B5;
 }
 
 html {
@@ -79,8 +79,8 @@ body {
 }
 
 .msg-img {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   margin-right: 10px;
   background-repeat: no-repeat;
   background-position: center;
@@ -90,7 +90,7 @@ body {
 
 .msg-bubble {
   max-width: 380px;
-  padding: 10px;
+  padding: 5px;
   border-radius: 10px;
   background: var(--left-msg-bg);
 }
@@ -116,7 +116,7 @@ body {
 }
 
 .left-msg .msg-img {
-  margin: 0 10px 0 0;
+  margin: 0 5px 0 0;
 }
 
 .right-msg {
@@ -130,7 +130,7 @@ body {
 }
 
 .right-msg .msg-img {
-  margin: 0 0 0 10px;
+  margin: 0 0 0 5px;
 }
 
 .msger-inputarea {
@@ -166,23 +166,33 @@ body {
 .sidebar {
   position: sticky;
   top: 0;
-  height: 100%;
-  width: 150px;
-  background-color: #202123;
+  width: 120px;
+  background-color: bisque;
   padding-top: 20px;
   overflow-y: auto;
   overflow-x: hidden;
+  height: inherit;
+}
+
+.sidebar-header {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 26px;
+  cursor: auto;
+  background: #2b2c34;
+  color: #d9d9d9;
+  padding: inherit;
 }
 
 .tablink {
-  display: block;
+  display: flow-root;
   color: #fff;
-  text-align: left;
+  text-align: center;
   padding: 8px 16px;
   text-decoration: none;
   font-size: 16px;
   border: none;
-  background-color: #202123;
+  background-color: lightseagreen;
   width: 100%;
   cursor: pointer;
   transition: 0.3s;
@@ -206,12 +216,18 @@ body {
   display: block;
 }
 
-.sidebar-header {
-     font-weight: bold;
-     text-align: center;
-     margin-bottom: 26px;
-     cursor: auto;
+#tab2 {
+  display: block;
 }
+
+#tab3 {
+  display: block;
+}
+
+#tab4 {
+  display: block;
+}
+
 #delete-button {
   background: indigo;
   border: none;
