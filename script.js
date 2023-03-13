@@ -96,7 +96,7 @@ function appendMessage(name, img, side, text, id) {
     
     scrollToBottom();
     
-    console.log("scrollTop location:", msgerChat.scrollTop);
+    //console.log("scrollTop location:", msgerChat.scrollTop);
     
     
 }
@@ -106,6 +106,7 @@ function sendMsg(msg) {
     var formData = new FormData();
     formData.append('msg', msg);
     formData.append('user_id', USER_ID);
+    
     fetch('/send-message.php', {method: 'POST', body: formData})
         .then(response => response.json())
         .then(data => {
@@ -114,8 +115,6 @@ function sendMsg(msg) {
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
-            
-
             eventSource.onmessage = function (e) {
                 if (e.data == "[DONE]") {
                 	  msgerChat.scrollTop = msgerChat.scrollHeight;
@@ -193,11 +192,6 @@ function formatCodeBlocks(text) {
   const codeBlockRegex = /```([\s\S]+?)```/g;
   return text.replace(codeBlockRegex, '<pre><code>$1</code></pre>');
 }
-
-const textWithCodeBlock = 'Here is some text with a code block:\n```\nconst message = "Hello, world!";\nconsole.log(message);\n```\nAnd here is some more text.';
-const formattedText = formatCodeBlocks(textWithCodeBlock);
-
-console.log(formattedText);
 
 
 // Function to scroll to the bottom of the messages

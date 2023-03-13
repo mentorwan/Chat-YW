@@ -177,11 +177,12 @@ body {
 .sidebar-header {
   font-weight: bold;
   text-align: center;
-  margin-bottom: 26px;
+  margin-bottom: auto;
   cursor: auto;
   background: #2b2c34;
   color: #d9d9d9;
-  padding: inherit;
+  padding: 15px;
+  border-radius:70%;
 }
 
 .tablink {

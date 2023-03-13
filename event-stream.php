@@ -20,11 +20,16 @@ $id = $_GET['id'];
 
 // Retrieve the data in ascending order by the id column
 $results = $db->query('SELECT * FROM main.chat_history ORDER BY id ASC');
-$history[] = [ROLE => SYS, CONTENT => "You are a helpful assistant."];
-while ($row = $results->fetchArray()) {
-    $history[] = [ROLE => USER, CONTENT => $row['human']];
-    $history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
-}
+
+    //$history[] = [ROLE => SYS, CONTENT => "You are a helpful assistant."];
+    $history[] = [ROLE => SYS, CONTENT => "You are a grammar analyzer and fixer."];
+    while ($row = $results->fetchArray()) {
+        $history[] = [ROLE => USER, CONTENT => $row['human']];
+    //$history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
+        $history[] = [ROLE => ASSISTANT, CONTENT => "fix the grammar in the original text using English without providing an explanation."];
+    }
+
+
 // Prepare a SELECT statement to retrieve the 'human' field of the row with ID 6
 $stmt = $db->prepare('SELECT human FROM main.chat_history WHERE id = :id');
 $stmt->bindValue(':id', $chat_history_id, SQLITE3_INTEGER);
