@@ -207,7 +207,7 @@ body {
 
 /* Styles for the tab content */
 .tabcontent {
-  display: none;
+  display: contents;
   padding: 20px;
   height: 100%;
 }
@@ -239,6 +239,10 @@ body {
   color: rgb(255, 255, 255);
   text-decoration: underline;
   cursor: pointer;
+}
+
+#id {
+  display: none;
 }
 
 .code-block {
