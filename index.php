@@ -24,20 +24,25 @@
 
 <div class="sidebar">
   <p class="sidebar-header">MODE</p>
-    <form method="GET">
-         <button type="submit" class="tablink" onclick="openTab(event, 'tab1')" name="button1">ASK ANYTHING</button>
+    <form class="tabcontent">
+         <button type="submit" class="tablink" onclick="openTab(event, 'button1')" id="button1" name="button1">ASK ANYTHING</button>
     </form>
-    <form method="GET">
-         <button type="submit" class="tablink" onclick="openTab(event, 'tab2')" name="button2">GRAMMAR FIX</button>
+    <form class="tabcontent">
+         <button type="submit" class="tablink" onclick="openTab(event, 'button2')" id="button2" name="button2">GRAMMAR FIX</button>
     </form>
-    <button class="tablink" onclick="openTab(event, 'tab3')">EN to CN</button>
-    <button class="tablink" onclick="openTab(event, 'tab4')">CN to EN</button>
+    <form class="tabcontent">
+         <button type="submit" class="tablink" onclick="openTab(event, 'button3')" id="button3" name="button3">EN TO CN</button>
+    </form>
+    <form class="tabcontent">
+         <button type="submit" class="tablink" onclick="openTab(event, 'button4')" id="button4" name="button4">EN TO CN</button>
+    </form>
 </div>
 
 <section class="msger">
     <header class="msger-header">
         <div class="msger-header-title">
-            <i class="fas fa-comments"></i>SESSION ID: <input type="text" id="id" hidden> <span class="id_session"></span>
+ <i class="fas fa-comments"></i> SESSION ID: <input type="text" id="id" hidden> <span class="id_session"></span>
+
         </div>
         <div class="msger-header-options">
             <button id="delete-button">Delete History</button>
@@ -58,15 +63,18 @@
 function openTab(evt, tabName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
+  
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
   }
   tablinks = document.getElementsByClassName("tablink");
+  console.log(tablinks.length)
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
   document.getElementById(tabName).style.display = "block";
-  evt.currentTarget.className += " active";
+  //evt.currentTarget.className += " active";
+  document.getElementById(tabName).className += " active";
 }
 </script>
 

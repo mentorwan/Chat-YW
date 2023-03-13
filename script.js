@@ -16,6 +16,24 @@ const msgerChat = get(".msger-chat");
 const msgerSendBtn = get(".msger-send-btn");
 
 
+var button1Clicked = false;
+var button2Clicked = false;
+
+document.getElementById("button1").addEventListener("click", function() {
+    // Button 1 was clicked
+    button1Clicked = true; 
+    button2Clicked = false;
+    console.log("button 1 clicked");
+});
+
+document.getElementById("button2").addEventListener("click", function() {
+    // Button 2 was clicked
+    button2Clicked = true;
+    button1Clicked = false;
+    console.log("button 2 clicked");
+});
+
+
 // Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "./gpt.png";
 //const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
@@ -106,8 +124,8 @@ function sendMsg(msg) {
     var formData = new FormData();
     formData.append('msg', msg);
     formData.append('user_id', USER_ID);
-    
-    fetch('/send-message.php', {method: 'POST', body: formData})
+   
+        fetch('/send-message.php', {method: 'POST', body: formData})
         .then(response => response.json())
         .then(data => {
             let uuid = uuidv4()
@@ -135,7 +153,7 @@ function sendMsg(msg) {
             };
         })
         .catch(error => console.error(error));
-
+    
 
 }
 
