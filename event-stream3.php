@@ -27,7 +27,7 @@ $results = $db->query('SELECT * FROM main.chat_history ORDER BY id ASC');
     while ($row = $results->fetchArray()) {
         $history[] = [ROLE => USER, CONTENT => $row['human']];
     //$history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
-        $history[] = [ROLE => ASSISTANT, CONTENT => "Translate English to Chinese or translate Chinese to English without explanation."];
+        $history[] = [ROLE => ASSISTANT, CONTENT => "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments."];
     }
 
 
@@ -44,7 +44,7 @@ $history[] = [ROLE => USER, CONTENT => $msg];
 $opts = [
     'model' => 'gpt-3.5-turbo',
     'messages' => $history,
-    'temperature' => 0,
+    'temperature' => 1,
     'max_tokens' => 1024,
     'frequency_penalty' => 0,
     'presence_penalty' => 0,
