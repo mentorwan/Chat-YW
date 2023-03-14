@@ -15,24 +15,9 @@ const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
 const msgerSendBtn = get(".msger-send-btn");
 
-
-var button1Clicked = false;
-var button2Clicked = false;
-
-document.getElementById("button1").addEventListener("click", function() {
-    // Button 1 was clicked
-    button1Clicked = true; 
-    button2Clicked = false;
-    console.log("button 1 clicked");
-});
-
-document.getElementById("button2").addEventListener("click", function() {
-    // Button 2 was clicked
-    button2Clicked = true;
-    button1Clicked = false;
-    console.log("button 2 clicked");
-});
-
+var Button1click = 0;
+var Button2click = 0;
+var Button3click = 0;
 
 // Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "./gpt.png";
@@ -68,16 +53,56 @@ deleteButton.addEventListener('click', event => {
     deleteChatHistory(USER_ID);
 });
 
+//Event listener for the button1 click
+const Button1 = document.querySelector("#button1");
+Button1.addEventListener('click',event => {
+    event.preventDefault();
+    Button1click = 1;
+    Button2click = 0;
+    Button3click = 0;
+
+})
+
+//Event listener for the button2 click
+const Button2 = document.querySelector("#button2");
+Button2.addEventListener('click',event => {
+    event.preventDefault();
+    Button1click = 0;
+    Button2click = 1;
+    Button3click = 0;
+})
+
+//Event listener for the button3 click
+const Button3 = document.querySelector("#button3");
+Button3.addEventListener('click',event => {
+    event.preventDefault();
+    Button1click = 0;
+    Button2click = 0;
+    Button3click = 1;
+
+})
+
+
 msgerForm.addEventListener("submit", event => {
     event.preventDefault();
 
     const msgText = msgerInput.value;
     if (!msgText) return;
+    
+    console.log("Button1 " + Button1click);
+    console.log("Button2 " + Button2click);
+    console.log("Button3 " + Button3click);
 
     appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
     msgerInput.value = "";
-
-    sendMsg(msgText)
+  
+    if (Button1click == 1){
+        sendMsg1(msgText);
+    } else if (Button2click == 1){
+        sendMsg2(msgText);
+    } else if (Button3click == 1){
+        sendMsg3(msgText);
+    }
 });
 
 function getHistory() {
@@ -119,7 +144,7 @@ function appendMessage(name, img, side, text, id) {
     
 }
 
-function sendMsg(msg) {
+function sendMsg1(msg) {
     msgerSendBtn.disabled = true
     var formData = new FormData();
     formData.append('msg', msg);
@@ -129,7 +154,45 @@ function sendMsg(msg) {
         .then(response => response.json())
         .then(data => {
             let uuid = uuidv4()
-            const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+            const eventSource = new EventSource(`/event-stream1.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+            appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
+            const div = document.getElementById(uuid);
+            
+            eventSource.onmessage = function (e) {
+                if (e.data == "[DONE]") {
+                	  msgerChat.scrollTop = msgerChat.scrollHeight;
+                    msgerSendBtn.disabled = false
+                    eventSource.close();
+                } else {
+                    let txt = JSON.parse(e.data).choices[0].delta.content
+                    if (txt !== undefined) {
+                        div.innerHTML += txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                    }
+                    
+                }
+            };
+            eventSource.onerror = function (e) {
+                msgerSendBtn.disabled = false
+                console.log(e);
+                eventSource.close();
+            };
+        })
+        .catch(error => console.error(error));
+
+}
+
+
+function sendMsg2(msg) {
+    msgerSendBtn.disabled = true
+    var formData = new FormData();
+    formData.append('msg', msg);
+    formData.append('user_id', USER_ID);
+   
+        fetch('/send-message.php', {method: 'POST', body: formData})
+        .then(response => response.json())
+        .then(data => {
+            let uuid = uuidv4()
+            const eventSource = new EventSource(`/event-stream2.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
@@ -154,6 +217,43 @@ function sendMsg(msg) {
         })
         .catch(error => console.error(error));
     
+
+}
+
+function sendMsg3(msg) {
+    msgerSendBtn.disabled = true
+    var formData = new FormData();
+    formData.append('msg', msg);
+    formData.append('user_id', USER_ID);
+   
+        fetch('/send-message.php', {method: 'POST', body: formData})
+        .then(response => response.json())
+        .then(data => {
+            let uuid = uuidv4()
+            const eventSource = new EventSource(`/event-stream3.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+            appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
+            const div = document.getElementById(uuid);
+            
+            eventSource.onmessage = function (e) {
+                if (e.data == "[DONE]") {
+                	  msgerChat.scrollTop = msgerChat.scrollHeight;
+                    msgerSendBtn.disabled = false
+                    eventSource.close();
+                } else {
+                    let txt = JSON.parse(e.data).choices[0].delta.content
+                    if (txt !== undefined) {
+                        div.innerHTML += txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                    }
+                    
+                }
+            };
+            eventSource.onerror = function (e) {
+                msgerSendBtn.disabled = false
+                console.log(e);
+                eventSource.close();
+            };
+        })
+        .catch(error => console.error(error));
 
 }
 

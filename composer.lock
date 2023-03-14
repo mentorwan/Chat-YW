@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "orhanerday/open-ai",
-            "version": "4.6",
+            "version": "4.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orhanerday/open-ai.git",
-                "reference": "196243f2e924718896ae22760ac9aa7d5f905927"
+                "reference": "d2d96d0521ef3118cc4f33a5d54718b62aedd336"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orhanerday/open-ai/zipball/196243f2e924718896ae22760ac9aa7d5f905927",
-                "reference": "196243f2e924718896ae22760ac9aa7d5f905927",
+                "url": "https://api.github.com/repos/orhanerday/open-ai/zipball/d2d96d0521ef3118cc4f33a5d54718b62aedd336",
+                "reference": "d2d96d0521ef3118cc4f33a5d54718b62aedd336",
                 "shasum": ""
             },
             "require": {
@@ -55,7 +55,7 @@
             ],
             "support": {
                 "issues": "https://github.com/orhanerday/open-ai/issues",
-                "source": "https://github.com/orhanerday/open-ai/tree/4.6"
+                "source": "https://github.com/orhanerday/open-ai/tree/4.7.1"
             },
             "funding": [
                 {
@@ -63,7 +63,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-04T19:07:37+00:00"
+            "time": "2023-03-08T08:04:02+00:00"
         }
     ],
     "packages-dev": [],

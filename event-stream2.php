@@ -18,6 +18,7 @@ $db = new SQLite3('db.sqlite');
 $chat_history_id = $_GET['chat_history_id'];
 $id = $_GET['id'];
 
+
 // Retrieve the data in ascending order by the id column
 $results = $db->query('SELECT * FROM main.chat_history ORDER BY id ASC');
 

@@ -25,16 +25,13 @@
 <div class="sidebar">
   <p class="sidebar-header">MODE</p>
     <form class="tabcontent">
-         <button type="submit" class="tablink" onclick="openTab(event, 'button1')" id="button1" name="button1">ASK ANYTHING</button>
+         <button type="submit" class="tablink" onclick="openTab('button1')" id="button1" value="button1">CHAT ANYTHING</button>
     </form>
     <form class="tabcontent">
-         <button type="submit" class="tablink" onclick="openTab(event, 'button2')" id="button2" name="button2">GRAMMAR FIX</button>
+         <button type="submit" class="tablink" onclick="openTab('button2')" id="button2" value="button2">GRAMMAR CHECK</button>
     </form>
     <form class="tabcontent">
-         <button type="submit" class="tablink" onclick="openTab(event, 'button3')" id="button3" name="button3">EN TO CN</button>
-    </form>
-    <form class="tabcontent">
-         <button type="submit" class="tablink" onclick="openTab(event, 'button4')" id="button4" name="button4">EN TO CN</button>
+         <button type="submit" class="tablink" onclick="openTab('button3')" id="button3" value="button3">TRANSLATE EN/CN</button>
     </form>
 </div>
 
@@ -56,18 +53,18 @@
         <button type="submit" class="msger-send-btn">Send</button>
     </form>
 </section>
-<script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
+<!-- <script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script> -->
 <script src="./script.js"></script>
 <script>
-function openTab(evt, tabName) {
+function openTab(tabName) {
   var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
+  //tabcontent = document.getElementsByClassName("tabcontent");
   
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
+  //for (i = 0; i < tabcontent.length; i++) {
+  //  tabcontent[i].style.display = "none";
+  //}
   tablinks = document.getElementsByClassName("tablink");
-  console.log(tablinks.length)
+  console.log(tablinks.length);
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
