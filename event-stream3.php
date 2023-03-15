@@ -27,7 +27,8 @@ $results = $db->query('SELECT * FROM main.chat_history ORDER BY id ASC');
     while ($row = $results->fetchArray()) {
         $history[] = [ROLE => USER, CONTENT => $row['human']];
     //$history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
-        $history[] = [ROLE => ASSISTANT, CONTENT => "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments."];
+        $history[] = [ROLE => ASSISTANT, CONTENT => "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments.
+        Don't show assistant message"];
     }
 
 

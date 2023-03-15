@@ -46,6 +46,20 @@ function deleteChatHistory(userId) {
         .catch(error => console.error(error));
 }
 
+
+//auto hide sidebar
+const sidebar = document.getElementById('sidebar');
+
+//document.addEventListener('mousemove', (e) => {
+//    if (e.clientX <= 50) { // Adjust the value for sensitivity
+//        sidebar.style.left = '0';
+//    } else {
+//        sidebar.style.left = '-120px'; // Match the sidebar width in CSS
+//    }
+//});
+
+
+
 // Event listener for the Delete button click
 const deleteButton = document.querySelector('#delete-button');
 deleteButton.addEventListener('click', event => {

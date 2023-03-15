@@ -164,15 +164,57 @@ body {
 .msger-send-btn:hover {
   background: #4c5563;
 }
+
+/* Styles for desktop*/
+@media (min-width: 768px){
 .sidebar {
-  position: sticky;
+  position: inherit;
+  left: 75px; /* Set the sidebar width here */
+  right: auto;
   top: 0;
-  width: 120px;
+  width: 120px; /* Set the sidbar width here */
   background-color: bisque;
-  padding-top: 20px;
-  overflow-y: auto;
+  padding-top: 25px;
   overflow-x: hidden;
   height: inherit;
+}
+}
+
+/* Styles for mobile*/
+@media (max-width: 768px){
+  .sidebar {
+    position: sticky;
+    /*left: 0px; Set the sidebar width here */
+    top: 0;
+    width: 120px; /* Set the sidbar width here */
+    background-color: bisque;
+    padding-top: 25px;
+    overflow-x: hidden;
+    height: inherit;
+    transition: left 0.5s;
+    z-index: 1000;
+  }
+
+  .sidebar:hover {
+    left: -120px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    padding: 8px 16px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .content {
+    padding: 20px;
+    background-color: #f1f1f1;
+    height: 100%;
+  }
 }
 
 .sidebar-header {
