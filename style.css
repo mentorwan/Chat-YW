@@ -28,6 +28,7 @@ body {
 }
 
 .msger {
+  position: relative;
   display: flex;
   flex-flow: column wrap;
   justify-content: space-between;
@@ -42,12 +43,19 @@ body {
 }
 
 .msger-header {
-  display: flex;
   justify-content: space-between;
   padding: 10px;
   border-bottom: var(--border);
   background: #2b2c34;
   color: #d9d9d9;
+}
+
+.msger-header-title {
+  display: none;
+}
+
+.msger-header-options {
+  float: right;
 }
 
 .msger-chat {
@@ -164,17 +172,25 @@ body {
 .msger-send-btn:hover {
   background: #4c5563;
 }
-.sidebar {
-  position: sticky;
-  top: 0;
-  width: 120px;
+
+.header {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  height: 5%;
+  margin-bottom: 40.5%;
+  left: 27.5%;
+  z-index: 1;
   background-color: bisque;
-  padding-top: 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: inherit;
+  border: 3px solid white
 }
 
+.seperator {
+  display: inline-block;
+  border-right: 2px solid white
+}
+/*
 .sidebar-header {
   font-weight: bold;
   text-align: center;
@@ -185,7 +201,7 @@ body {
   padding: 15px;
   border-radius:70%;
 }
-
+*/
 .tablink {
   display: flow-root;
   color: #fff;
@@ -209,7 +225,7 @@ body {
 /* Styles for the tab content */
 .tabcontent {
   display: contents;
-  padding: 20px;
+  padding: 50px;
   height: 100%;
 }
 

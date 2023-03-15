@@ -22,23 +22,22 @@
 
 <body>
 
-<div class="sidebar">
-  <p class="sidebar-header">MODE</p>
-    <form class="tabcontent">
-         <button type="submit" class="tablink" onclick="openTab('button1')" id="button1" value="button1">CHAT ANYTHING</button>
-    </form>
-    <form class="tabcontent">
-         <button type="submit" class="tablink" onclick="openTab('button2')" id="button2" value="button2">GRAMMAR CHECK</button>
-    </form>
-    <form class="tabcontent">
-         <button type="submit" class="tablink" onclick="openTab('button3')" id="button3" value="button3">TRANSLATE EN/CN</button>
-    </form>
+<div class="header">
+  <form class="tabcontent">
+    <button type="submit" class="tablink" onclick="openTab('button1')" id="button1" value="button1">CHATTING</button>
+  </form>
+  <form class="tabcontent">
+    <button type="submit" class="tablink" onclick="openTab('button2')" id="button2" value="button2">GRAMMAR CHECK</button>
+  </form>
+  <form class="tabcontent">
+    <button type="submit" class="tablink" onclick="openTab('button3')" id="button3" value="button3">TRANSLATE EN/CN</button>
+  </form>
 </div>
 
 <section class="msger">
     <header class="msger-header">
         <div class="msger-header-title">
-             <i class="fas fa-comments"></i> SESSION ID: <input type="text" id="id" hidden> <span class="id_session"></span>
+            <i class="fas fa-comments"></i> SESSION ID: <input type="text" id="id" hidden> <span class="id_session"></span>
         </div>
         <div class="msger-header-options">
             <button id="delete-button">Delete History</button>
