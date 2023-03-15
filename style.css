@@ -48,9 +48,14 @@ body {
   border-bottom: var(--border);
   background: #2b2c34;
   color: #d9d9d9;
+  height: 40px;
 }
 
 .msger-header-title {
+  display: block;
+}
+
+.id_session{
   display: none;
 }
 
@@ -202,10 +207,7 @@ body {
     height: inherit;
     transition: left 0.5s;
     z-index: 1000;
-  }
-
-  .sidebar:hover {
-    left: -120px;
+    user-select:nonel
   }
   
   .sidebar ul {
@@ -291,6 +293,9 @@ body {
   color: rgb(255, 255, 255);
   text-decoration: underline;
   cursor: pointer;
+  font-size: large;
+  position: relative;
+  top: -20px;
 }
 
 #id {
