@@ -28,6 +28,7 @@ body {
 }
 
 .msger {
+  position: relative;
   display: flex;
   flex-flow: column wrap;
   justify-content: space-between;
@@ -42,12 +43,19 @@ body {
 }
 
 .msger-header {
-  display: flex;
   justify-content: space-between;
   padding: 10px;
   border-bottom: var(--border);
   background: #2b2c34;
   color: #d9d9d9;
+}
+
+.msger-header-title {
+  display: none;
+}
+
+.msger-header-options {
+  float: right;
 }
 
 .msger-chat {
@@ -180,6 +188,7 @@ body {
 }
 }
 
+
 /* Styles for mobile*/
 @media (max-width: 768px){
   .sidebar {
@@ -251,7 +260,7 @@ body {
 /* Styles for the tab content */
 .tabcontent {
   display: contents;
-  padding: 20px;
+  padding: 50px;
   height: 100%;
 }
 
