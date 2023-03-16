@@ -36,14 +36,14 @@ function deleteChatHistory(userId) {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'}
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error deleting chat history: ' + response.statusText);
-            }
-            deleteAllCookies()
-            location.reload(); // Reload the page to update the chat history table
-        })
-        .catch(error => console.error(error));
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error deleting chat history: ' + response.statusText);
+        }
+        deleteAllCookies()
+        location.reload(); // Reload the page to update the chat history table
+    })
+    .catch(error => console.error(error));
 }
 
 

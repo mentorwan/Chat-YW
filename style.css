@@ -37,7 +37,6 @@ body {
   margin: 25px 10px;
   height: calc(100% - 50px);
   border: var(--border);
-  border-radius: 5px;
   background: var(--msger-bg);
   box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
 }
@@ -236,7 +235,6 @@ body {
   background: #2b2c34;
   color: #d9d9d9;
   padding: 15px;
-  border-radius:70%;
 }
 
 .tablink {
@@ -284,16 +282,16 @@ body {
 }
 
 #delete-button {
-  background: indigo;
-  border: none;
+  border: 3px solid cornflowerblue;
   padding: 0!important;
   /*optional*/
   font-family: arial, sans-serif;
   /*input has OS specific font-family*/
-  color: rgb(255, 255, 255);
+  color: aqua;
+  background-color: inherit;
   text-decoration: underline;
   cursor: pointer;
-  font-size: large;
+  font-size: 16px;
   position: relative;
   top: -20px;
 }
