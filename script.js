@@ -47,8 +47,31 @@ function deleteChatHistory(userId) {
 }
 
 
-//auto drag sidebar
-//const sidebar = document.getElementById('sidebar');
+document.addEventListener('DOMContentLoaded', () => {
+    const menuBtn = document.getElementById('menu-btn');
+    const sideDrawer = document.getElementById('sidebar');
+    const content = document.getElementById('msger');
+
+    let isDrawerOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+        isDrawerOpen = !isDrawerOpen;
+        if (isDrawerOpen) {
+            sideDrawer.style.transform = 'translateX(0)';
+        } else {
+            sideDrawer.style.transform = 'translateX(-250px)';
+        }
+    });
+    
+});
+
+
+//content.addEventListener('click', () => {
+//    if (isDrawerOpen) {
+//        isDrawerOpen = false;
+//        sideDrawer.style.transform = 'translateX(-250px)';
+//    }
+//});
 
 
 // Event listener for the Delete button click

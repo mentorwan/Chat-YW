@@ -22,7 +22,7 @@
 
 <body>
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
   <p class="sidebar-header">MODE</p>
     <form class="tabcontent">
          <button type="submit" class="tablink" onclick="openTab('button1')" id="button1" value="button1">CHAT ANYTHING</button>
@@ -38,16 +38,17 @@
 <section class="msger">
     <header class="msger-header">
         <div class="msger-header-title">
-            <i class="fas fa-comments"></i> <input type="text" id="id" hidden> CHATGPT 3.5 TURBO <span class="id_session"></span>
+          <i class="fas fa-comments"></i> <input type="text" id="id" hidden> CHATGPT 3.5 TURBO <span class="id_session"></span>
         </div>
         <div class="msger-header-options">
+            <button id="menu-btn">MODE</button>
             <button id="delete-button">Delete History</button>
         </div>
     </header>
 
     <main class="msger-chat">
     </main>
-
+ 
     <form class="msger-inputarea">
         <input class="msger-input" placeholder="Enter your message..." require>
         <button type="submit" class="msger-send-btn">Send</button>
