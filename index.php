@@ -38,7 +38,7 @@
 <section class="msger" id="msger">
     <header class="msger-header">
         <div class="msger-header-title">
-          <i class="fas fa-comments"></i> <input type="text" id="id" hidden> CHATGPT <span class="id_session"></span>
+          <i class="fas fa-comments"></i> <input type="text" id="id" hidden> ChatGPT <span class="id_session"></span>
         </div>
         <div class="msger-header-options1">
             <button id="menu-btn">MODE</button>

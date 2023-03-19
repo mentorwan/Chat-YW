@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    content.style.width = '200%';  
+    content.style.width = '250%';  
     let isDrawerOpen = false;
 
     menuBtn.addEventListener('click', () => {
@@ -67,9 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isDrawerOpen) {
             sideDrawer.style.transform = 'translateX(0)';
             content.style.width = '';
+            
         } else {
             sideDrawer.style.transform = 'translateX(-300%)';
-            content.style.width = '200%';
+            content.style.width = '250%';
         }
     });
     
