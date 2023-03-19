@@ -52,14 +52,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const sideDrawer = document.getElementById('sidebar');
     const content = document.getElementById('msger');
 
+    //content.classList.add('msger-collapsed');
+
+    if (!content) {
+        console.error('Element with ID "msger" not found');
+        return;
+    }
+
+    content.style.width = '200%';  
     let isDrawerOpen = false;
 
     menuBtn.addEventListener('click', () => {
         isDrawerOpen = !isDrawerOpen;
         if (isDrawerOpen) {
             sideDrawer.style.transform = 'translateX(0)';
+            content.style.width = '';
         } else {
             sideDrawer.style.transform = 'translateX(-300%)';
+            content.style.width = '200%';
         }
     });
     
