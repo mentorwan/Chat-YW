@@ -38,10 +38,12 @@
 <section class="msger">
     <header class="msger-header">
         <div class="msger-header-title">
-          <i class="fas fa-comments"></i> <input type="text" id="id" hidden> CHATGPT 3.5 TURBO <span class="id_session"></span>
+          <i class="fas fa-comments"></i> <input type="text" id="id" hidden> CHATGPT <span class="id_session"></span>
         </div>
-        <div class="msger-header-options">
+        <div class="msger-header-options1">
             <button id="menu-btn">MODE</button>
+        </div>
+        <div class="msger-header-options2">
             <button id="delete-button">Delete History</button>
         </div>
     </header>

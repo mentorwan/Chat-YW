@@ -59,20 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isDrawerOpen) {
             sideDrawer.style.transform = 'translateX(0)';
         } else {
-            sideDrawer.style.transform = 'translateX(-250px)';
+            sideDrawer.style.transform = 'translateX(-300%)';
         }
     });
     
 });
-
-
-//content.addEventListener('click', () => {
-//    if (isDrawerOpen) {
-//        isDrawerOpen = false;
-//        sideDrawer.style.transform = 'translateX(-250px)';
-//    }
-//});
-
 
 // Event listener for the Delete button click
 const deleteButton = document.querySelector('#delete-button');
