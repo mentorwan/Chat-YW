@@ -27,19 +27,38 @@ body {
   font-family: Helvetica, sans-serif;
 }
 
-.msger {
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  flex-flow: column wrap;
-  justify-content: space-between;
-  width: 75%;
-  margin: 25px 0;
-  margin-right: 5%;
-  height: calc(100% - 50px);
-  border: var(--border);
-  background: var(--msger-bg);
-  transition: width 0.3s ease;
+@media (min-width: 768px) {
+  .msger {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    width: 75%;
+    margin: 25px 0;
+    margin-right: 3%;
+    height: calc(100% - 50px);
+    border: var(--border);
+    background: var(--msger-bg);
+    transition: width 0.3s ease;
+  }
+}
+
+@media (max-width: 768px) {
+  .msger {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    width: 75%;
+    margin: 25px 0;
+    margin-right: 10%;
+    height: calc(100% - 50px);
+    border: var(--border);
+    background: var(--msger-bg);
+    transition: width 0.3s ease;
+  }
 }
 
 
