@@ -32,7 +32,10 @@
          <button type="submit" class="tablink" onclick="openTab('button2')" id="button2" value="button2">GRAMMAR CHECK</button>
     </form>
     <form class="tabcontent">
-         <button type="submit" class="tablink" onclick="openTab('button3')" id="button3" value="button3">TRANSLATE EN/CN</button>
+         <button type="submit" class="tablink" onclick="openTab('button3')" id="button3" value="button3">TRANSLATE</button>
+    </form>
+    <form class="tabcontent">
+         <button type="submit" class="tablink" onclick="openTab('button4')" id="button4" value="button4">STOCK</button>
     </form>
 </div>
 
