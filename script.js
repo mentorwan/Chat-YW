@@ -130,6 +130,7 @@ msgerForm.addEventListener("submit", event => {
     msgerInput.value = "";
   
     if (Button1click == 1){
+        console.log(msgText);
         sendMsg1(msgText);
     } else if (Button2click == 1){
         sendMsg2(msgText);

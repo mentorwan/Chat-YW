@@ -14,6 +14,7 @@ $open_ai_key = getenv('OPENAI_API_KEY');
 $open_ai = new OpenAi($open_ai_key);
 // Open the SQLite database
 $db = new SQLite3('db.sqlite');
+$open_ai_model = 'gpt-3.5-turbo';
 
 $chat_history_id = $_GET['chat_history_id'];
 $id = $_GET['id'];
@@ -40,7 +41,7 @@ $msg = $result->fetchArray(SQLITE3_ASSOC)['human'];
 $history[] = [ROLE => USER, CONTENT => $msg];
 
 $opts = [
-    'model' => 'gpt-3.5-turbo',
+    'model' =>  $open_ai_model,
     'messages' => $history,
     'temperature' => 1.0,
     'max_tokens' => 1024,

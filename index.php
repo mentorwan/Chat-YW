@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ChatGPT 3.5 Turbo Tools</title>
+    <title>ChatGPT Tools</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.3.0/css/all.css" integrity="sha384-4HTzq+EQ0XRE6sz/dH5/5Z5x5Fcl90zU6fPqx6RzU6E1UOvxXbSZQ1m/wkZvjddC" crossorigin="anonymous">
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -38,7 +39,7 @@
 <section class="msger" id="msger">
     <header class="msger-header">
         <div class="msger-header-title">
-          <i class="fas fa-comments"></i> <input type="text" id="id" hidden> ChatGPT <span class="id_session"></span>
+        <i class="fas fa-comment-alt"></i><input type="text" id="id" hidden> ChatGPT <span class="id_session"></span>
         </div>
         <div class="msger-header-options1">
             <button id="menu-btn">MODE</button>
@@ -56,7 +57,7 @@
         <button type="submit" class="msger-send-btn">Send</button>
     </form>
 </section>
-<!-- <script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script> -->
+<script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
 <script src="./script.js"></script>
 <script>
 function openTab(tabName) {

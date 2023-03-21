@@ -1,15 +1,7 @@
 # ChatGPT Clone
 
-<div align="center">
-
-![ezgif-1-92e240a6d3](https://user-images.githubusercontent.com/22305274/220125119-ccbdb855-bdb9-476f-8f5f-f5d5530f0a24.gif)
-
-</div>
 
 This project is a ChatGPT clone that allows users to chat with an AI language model trained by OpenAI. It's powered by the github.com/orhanerday/OpenAI php library, which provides an easy-to-use interface for communicating with the OpenAI API.
-
-![Image](https://user-images.githubusercontent.com/22305274/219878523-6d8be435-35df-4cce-b2cd-52334f9e7f12.png)
-
 
 
 # Important Notice
@@ -40,8 +32,67 @@ docker run -p 80:80 -e OPENAI_API_KEY=<key> chatgpt
 http://localhost
 <hr>
 
+
+## Configuration
+
+| Environment Variable       | Description                                                                                               | Default Value         |
+|----------------------------|-----------------------------------------------------------------------------------------------------------|-----------------------|
+| `OPENAI_API_KEY`           | API key for the OpenAI API.                                                                               | None (required)       |
+| `OPENAI_MODEL`             | Name of the OpenAI model to use.                                                                          | `gpt-3.5-turbo`       |
+| `OPENAI_TEMPERATURE`       | Temperature value for generating text using the OpenAI API.                                               | `1.0`                 |
+| `OPENAI_MAX_TOKENS`        | Maximum number of tokens to generate when using the OpenAI API.                                           | `100`                 |
+| `OPENAI_FREQUENCY_PENALTY` | Frequency penalty value when generating text using the OpenAI API.                                        | `0.0`                 |
+| `OPENAI_PRESENCE_PENALTY`  | Presence penalty value when generating text using the OpenAI API.                                         | `0.0`                 |
+| `DB_FILE`                  | Path to the SQLite database file.                                                                         | `db.sqlite`           |
+
+
+
+## Prerequisites
+Before running this project, you should have the following:
+
+* PHP 7.4 or later with SQLite3 enabled
+* Composer
+* An OpenAI API key (which should be set to the $open_ai_key variable in event-stream.php)
+Getting Started
+
+## Get Started
+
+### Enable sqlite3
+
+* Open the php.ini file. This file is usually located in the PHP installation directory.
+* Find the following line: ;extension=php_sqlite3.dll
+* Remove the semicolon at the beginning of the line to uncomment it.
+* Save the file.
+* Restart the web server.
+
+* ### Clone this repository to your local machine
+```sh
+git clone https://github.com/orhanerday/ChatGPT.git
+```
+* ### Navigate to the project directory
+```sh
+cd ChatGPT
+```
+* ### Install OrhanErday/OpenAI
+```sh
+composer require orhanerday/open-ai
+```
+
+* ### Set your OpenAI API key as the `$open_ai_key` variable in `event-stream.php`
+```php
+$open_ai_key = ""; 
+```
+
+* ### Start the PHP built-in web server
+```sh
+php -S localhost:80 -t .
+```
+* ### Open your web browser and go to http://localhost
+
+* ### You should now see the ChatGPT clone interface, where you can chat with the OpenAI language model.
+
 ## Chat History
 This project saves chat history using cookies by default. If you want to change this to use authentication instead, you can modify the code in index.php to save chat history in a database or other storage mechanism.
 
 ## Credits
-This project is powered by the github.com/orhanerday/OpenAI php library, which provides an easy-to-use interface for communicating with the OpenAI API.
+This project is forked from the github.com/orhanerday/OpenAI php library, which provides an easy-to-use interface for communicating with the OpenAI API.
