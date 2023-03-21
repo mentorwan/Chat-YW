@@ -226,7 +226,14 @@ function sendMsg1(msg) {
             };
             eventSource.onerror = function (e) {
                 msgerSendBtn.disabled = false
-                console.log(e);
+                console.error('Error event:', e);
+                if (e.target.readyState === EventSource.CLOSED) {
+                        console.error('EventSource connection closed.');
+                } else if (e.target.readyState === EventSource.CONNECTING) {
+                        console.error('EventSource connection reconnecting.');
+                } else if (e.target.readyState === EventSource.OPEN) {
+                console.error('EventSource connection open, but an error occurred.');
+                }
                 eventSource.close();
             };
         })
