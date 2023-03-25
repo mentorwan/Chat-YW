@@ -74,7 +74,6 @@ function openTab(tabName) {
   //  tabcontent[i].style.display = "none";
   //}
   tablinks = document.getElementsByClassName("tablink");
-  console.log(tablinks.length);
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }

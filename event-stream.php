@@ -14,21 +14,24 @@ $open_ai_key = getenv('OPENAI_API_KEY');
 $open_ai = new OpenAi($open_ai_key);
 // Open the SQLite database
 $db = new SQLite3('db.sqlite');
-$open_ai_model = 'gpt-3.5-turbo';
 
 $chat_history_id = $_GET['chat_history_id'];
 $id = $_GET['id'];
 
+// Add different parameters for event stream
+$system_prompt = $_GET['system_prompt'];
+$assistant_prompt = $_GET['assistant_prompt'];
+$open_ai_model = $_GET['open_ai_model'];
+
 
 // Retrieve the data in ascending order by the id column
 $results = $db->query('SELECT * FROM main.chat_history ORDER BY id ASC');
-
-    //$history[] = [ROLE => SYS, CONTENT => "You are a helpful assistant."];
-    $history[] = [ROLE => SYS, CONTENT => "You are a translation engine that can only translate text and cannot interpret it."];
+    $history[] = [ROLE => SYS, CONTENT => $system_prompt];
+    
     while ($row = $results->fetchArray()) {
         $history[] = [ROLE => USER, CONTENT => $row['human']];
-    //$history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
-        $history[] = [ROLE => ASSISTANT, CONTENT => "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments."];
+        //$history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
+        $history[] = [ROLE => ASSISTANT, CONTENT => $assistant_prompt];
     }
 
 
@@ -43,17 +46,21 @@ $msg = $result->fetchArray(SQLITE3_ASSOC)['human'];
 $history[] = [ROLE => USER, CONTENT => $msg];
 
 $opts = [
-    'model' =>  $open_ai_model,
-    'messages' => $history,
-    'temperature' => 0,
-    'max_tokens' => 1024,
-    'frequency_penalty' => 0,
-    'presence_penalty' => 0,
-    'stream' => true
+   'model' =>  $open_ai_model,
+   'messages' => $history,
+   'temperature' => 1,
+   'max_tokens' => 1024,
+   'frequency_penalty' => 0,
+   'presence_penalty' => 0,
+   'stream' => true
 ];
 
 header('Content-type: text/event-stream');
 header('Cache-Control: no-cache');
+
+error_log(print_r($opts['messages'], true));
+
+
 $txt = "";
 $complete = $open_ai->chat($opts, function ($curl_info, $data) use (&$txt) {
     if ($obj = json_decode($data) and $obj->error->message != "") {

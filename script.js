@@ -15,18 +15,14 @@ const msgerInput = get(".msger-input");
 const msgerChat = get(".msger-chat");
 const msgerSendBtn = get(".msger-send-btn");
 
-var Button1click = 0;
-var Button2click = 0;
-var Button3click = 0;
-var Button4click = 0;
-var Button5click = 0;
 
 // Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "./gpt.png";
 //const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
-const PERSON_IMG = "./tauri.png"
+const PERSON_IMG = "./tauri.png";
 const BOT_NAME = "Assistant";
 const PERSON_NAME = "Client";
+const OPEN_AI_MODEL = "gpt-3.5-turbo";
 
 // Function to delete chat history records for a user ID using the API
 function deleteChatHistory(userId) {
@@ -85,63 +81,48 @@ deleteButton.addEventListener('click', event => {
     deleteChatHistory(USER_ID);
 });
 
+var clickedButton = 'button1'; //default value
+
+function onButtonClick(button) {
+    clickedButton = button;
+    console.log(clickedButton);
+}
+
+
 //Event listener for the button1 click
 const Button1 = document.querySelector("#button1");
 Button1.addEventListener('click',event => {
     event.preventDefault();
-    Button1click = 1;
-    Button2click = 0;
-    Button3click = 0;
-    Button4click = 0;
-    Button5click = 0;
+    clickedButton = 'button1';
 })
 
 //Event listener for the button2 click
 const Button2 = document.querySelector("#button2");
 Button2.addEventListener('click',event => {
     event.preventDefault();
-    Button1click = 0;
-    Button2click = 1;
-    Button3click = 0;
-    Button4click = 0;
-    Button5click = 0;
+    clickedButton = 'button2';
 })
 
 //Event listener for the button3 click
 const Button3 = document.querySelector("#button3");
 Button3.addEventListener('click',event => {
     event.preventDefault();
-    Button1click = 0;
-    Button2click = 0;
-    Button3click = 1;
-    Button4click = 0;
-    Button5click = 0;
+    clickedButton = 'button3';
 })
 
 //Event listener for the button3 click
 const Button4 = document.querySelector("#button4");
 Button4.addEventListener('click',event => {
     event.preventDefault();
-    Button1click = 0;
-    Button2click = 0;
-    Button3click = 0;
-    Button4click = 1;
-    Button5click = 0;
+    clickedButton = 'button4';
 })
 
 const Button5 = document.querySelector("#button5");
 Button5.addEventListener('click',event => {
     event.preventDefault();
-    Button1click = 0;
-    Button2click = 0;
-    Button3click = 0;
-    Button4click = 0;
-    Button5click = 1;
+    clickedButton = 'button5';
 })
 
-if( Button1click == 0 && Button2click == 0 && Button3click == 0 && Button4click == 0 && Button5click == 0){
-    Button1click = 1;
-}
 
 msgerForm.addEventListener("submit", event => {
     event.preventDefault();
@@ -149,27 +130,13 @@ msgerForm.addEventListener("submit", event => {
     const msgText = msgerInput.value;
     if (!msgText) return;
     
-    console.log("Button1 " + Button1click);
-    console.log("Button2 " + Button2click);
-    console.log("Button3 " + Button3click);
-    console.log("Button4 " + Button4click);
-    console.log("Button5 " + Button5click);
-
     appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
     msgerInput.value = "";
-  
-    if (Button1click == 1){
+ 
+    sendMsg(msgText,clickedButton);
+    if (clickedButton == 'button1'){
         console.log(msgText);
-        sendMsg1(msgText);
-    } else if (Button2click == 1){
-        sendMsg2(msgText);
-    } else if (Button3click == 1){
-        sendMsg3(msgText);
-    } else if (Button4click == 1){
-        sendMsg4(msgText);
-    } else if (Button5click == 1){
-        sendMsg5(msgText);
-    } 
+    }
 
 });
 
@@ -212,6 +179,85 @@ function appendMessage(name, img, side, text, id) {
     
 }
 
+
+function sendMsg(msg, clickedButton) {
+    msgerSendBtn.disabled = true
+    var formData = new FormData();
+    var system_prompt = "You are a helpful assistant.";
+    var assistant_prompt = "You can answer any questions.";
+    formData.append('msg', msg);
+    formData.append('user_id', USER_ID);
+   
+        fetch('/send-message.php', {method: 'POST', body: formData})
+        .then(response => response.json())
+        .then(data => {
+            let uuid = uuidv4();
+            let open_ai_model = OPEN_AI_MODEL;
+
+
+            switch(clickedButton) {
+                case 'button1':
+                    system_prompt = "You are a helpful assistant.";
+                    assistant_prompt = "You can answer any questions.";
+                    break;
+                case 'button2':
+                    system_prompt = "You are a grammar analyzer and fixer.";
+                    assistant_prompt = "Fix the grammar in the original text using English without providing an explanation.";
+                    break;
+                case 'button3':
+                    system_prompt = "You are a translation engine that can only translate text and cannot interpret it.";
+                    assistant_prompt = "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments.";
+                    break;
+                case 'button4':
+                    system_prompt = "You are a stock market guru with experience in understanding charts using technical analysis tools, while interpreting the macroeconomic environment prevailing across the world. Please provide clear verdicts and inform short-term predictions.";
+                    assistant_prompt = "What currently is the best way to invest money for short-term prospective?";
+                    break;
+                case 'button5':
+                    system_prompt = "You are AP Statistics teacher, you want to test your student learning capabilities on AP Statistics problems.";
+                    assistant_prompt = "Give me a question in AP Statistics test format.";
+                    break;
+            }
+                   
+            const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
+            &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
+            &open_ai_model=${encodeURIComponent(open_ai_model)}`);
+            
+
+            appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
+            const div = document.getElementById(uuid);
+            
+            eventSource.onmessage = function (e) {
+                if (e.data == "[DONE]") {
+                	  msgerChat.scrollTop = msgerChat.scrollHeight;
+                    msgerSendBtn.disabled = false
+                    eventSource.close();
+                } else {
+                    let txt = JSON.parse(e.data).choices[0].delta.content
+                    if (txt !== undefined) {
+                        div.innerHTML += txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                    }
+                    
+                }
+            };
+            eventSource.onerror = function (e) {
+                msgerSendBtn.disabled = false
+                console.error('Error event:', e);
+                if (e.target.readyState === EventSource.CLOSED) {
+                        console.error('EventSource connection closed.');
+                } else if (e.target.readyState === EventSource.CONNECTING) {
+                        console.error('EventSource connection reconnecting.');
+                } else if (e.target.readyState === EventSource.OPEN) {
+                console.error('EventSource connection open, but an error occurred.');
+                }
+                eventSource.close();
+            };
+        })
+        .catch(error => console.error(error));
+
+}
+
+
+
 function sendMsg1(msg) {
     msgerSendBtn.disabled = true
     var formData = new FormData();
@@ -221,8 +267,17 @@ function sendMsg1(msg) {
         fetch('/send-message.php', {method: 'POST', body: formData})
         .then(response => response.json())
         .then(data => {
-            let uuid = uuidv4()
-            const eventSource = new EventSource(`/event-stream1.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+            let uuid = uuidv4();
+           
+            let system_prompt = "You are a helpful assistant.";
+            let assistant_prompt = "You can answer any questions.";
+            let open_ai_model = OPEN_AI_MODEL;
+                   
+            const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
+            &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
+            &open_ai_model=${encodeURIComponent(open_ai_model)}`);
+            
+
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
@@ -267,7 +322,17 @@ function sendMsg2(msg) {
         .then(response => response.json())
         .then(data => {
             let uuid = uuidv4()
-            const eventSource = new EventSource(`/event-stream2.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+            
+            let system_prompt = "You are a grammar analyzer and fixer.";
+            let assistant_prompt = "Fix the grammar in the original text using English without providing an explanation.";
+            let open_ai_model = OPEN_AI_MODEL;
+                   
+            const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
+            &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
+            &open_ai_model=${encodeURIComponent(open_ai_model)}`);
+            
+
+
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
@@ -305,7 +370,17 @@ function sendMsg3(msg) {
         .then(response => response.json())
         .then(data => {
             let uuid = uuidv4()
-            const eventSource = new EventSource(`/event-stream3.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+            
+            let system_prompt = "You are a translation engine that can only translate text and cannot interpret it.";
+            let assistant_prompt = "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments.";
+            let open_ai_model = OPEN_AI_MODEL;
+                   
+            const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
+            &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
+            &open_ai_model=${encodeURIComponent(open_ai_model)}`);
+            
+
+
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
@@ -342,7 +417,15 @@ function sendMsg4(msg) {
         .then(response => response.json())
         .then(data => {
             let uuid = uuidv4()
-            const eventSource = new EventSource(`/event-stream4.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+
+            let system_prompt = "You are a stock market guru with experience in understanding charts using technical analysis tools, while interpreting the macroeconomic environment prevailing across the world. Please provide clear verdicts and inform short-term predictions.";
+            let assistant_prompt = "What currently is the best way to invest money for short-term prospective?";
+            let open_ai_model = OPEN_AI_MODEL;
+                   
+            const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
+            &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
+            &open_ai_model=${encodeURIComponent(open_ai_model)}`);
+            
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
@@ -379,7 +462,15 @@ function sendMsg5(msg) {
         .then(response => response.json())
         .then(data => {
             let uuid = uuidv4()
-            const eventSource = new EventSource(`/event-stream5.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+            
+            let system_prompt = "You are AP Statistics teacher, you want to test your student learning capabilities on AP Statistics problems.";
+            let assistant_prompt = "Give me a question in AP Statistics test format.";
+            let open_ai_model = OPEN_AI_MODEL;
+                   
+            const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
+            &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
+            &open_ai_model=${encodeURIComponent(open_ai_model)}`);
+            
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
