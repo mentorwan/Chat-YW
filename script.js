@@ -19,6 +19,7 @@ var Button1click = 0;
 var Button2click = 0;
 var Button3click = 0;
 var Button4click = 0;
+var Button5click = 0;
 
 // Icons made by Freepik from www.flaticon.com
 const BOT_IMG = "./gpt.png";
@@ -92,7 +93,7 @@ Button1.addEventListener('click',event => {
     Button2click = 0;
     Button3click = 0;
     Button4click = 0;
-
+    Button5click = 0;
 })
 
 //Event listener for the button2 click
@@ -103,6 +104,7 @@ Button2.addEventListener('click',event => {
     Button2click = 1;
     Button3click = 0;
     Button4click = 0;
+    Button5click = 0;
 })
 
 //Event listener for the button3 click
@@ -113,7 +115,7 @@ Button3.addEventListener('click',event => {
     Button2click = 0;
     Button3click = 1;
     Button4click = 0;
-
+    Button5click = 0;
 })
 
 //Event listener for the button3 click
@@ -124,10 +126,20 @@ Button4.addEventListener('click',event => {
     Button2click = 0;
     Button3click = 0;
     Button4click = 1;
-
+    Button5click = 0;
 })
 
-if( Button1click == 0 && Button2click == 0 && Button3click == 0 && Button4click == 0){
+const Button5 = document.querySelector("#button5");
+Button5.addEventListener('click',event => {
+    event.preventDefault();
+    Button1click = 0;
+    Button2click = 0;
+    Button3click = 0;
+    Button4click = 0;
+    Button5click = 1;
+})
+
+if( Button1click == 0 && Button2click == 0 && Button3click == 0 && Button4click == 0 && Button5click == 0){
     Button1click = 1;
 }
 
@@ -141,6 +153,7 @@ msgerForm.addEventListener("submit", event => {
     console.log("Button2 " + Button2click);
     console.log("Button3 " + Button3click);
     console.log("Button4 " + Button4click);
+    console.log("Button5 " + Button5click);
 
     appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
     msgerInput.value = "";
@@ -154,7 +167,9 @@ msgerForm.addEventListener("submit", event => {
         sendMsg3(msgText);
     } else if (Button4click == 1){
         sendMsg4(msgText);
-    }
+    } else if (Button5click == 1){
+        sendMsg5(msgText);
+    } 
 
 });
 
@@ -328,6 +343,43 @@ function sendMsg4(msg) {
         .then(data => {
             let uuid = uuidv4()
             const eventSource = new EventSource(`/event-stream4.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
+            appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
+            const div = document.getElementById(uuid);
+            
+            eventSource.onmessage = function (e) {
+                if (e.data == "[DONE]") {
+                	  msgerChat.scrollTop = msgerChat.scrollHeight;
+                    msgerSendBtn.disabled = false
+                    eventSource.close();
+                } else {
+                    let txt = JSON.parse(e.data).choices[0].delta.content
+                    if (txt !== undefined) {
+                        div.innerHTML += txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                    }
+                    
+                }
+            };
+            eventSource.onerror = function (e) {
+                msgerSendBtn.disabled = false
+                console.log(e);
+                eventSource.close();
+            };
+        })
+        .catch(error => console.error(error));
+
+}
+
+function sendMsg5(msg) {
+    msgerSendBtn.disabled = true
+    var formData = new FormData();
+    formData.append('msg', msg);
+    formData.append('user_id', USER_ID);
+   
+        fetch('/send-message.php', {method: 'POST', body: formData})
+        .then(response => response.json())
+        .then(data => {
+            let uuid = uuidv4()
+            const eventSource = new EventSource(`/event-stream5.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}`);
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             

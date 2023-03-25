@@ -26,7 +26,8 @@ $results = $db->query('SELECT * FROM main.chat_history ORDER BY id ASC');
     
     while ($row = $results->fetchArray()) {
         $history[] = [ROLE => USER, CONTENT => $row['human']];
-        $history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
+        //$history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
+        $history[] = [ROLE => ASSISTANT, CONTENT => "You can answer anything"];
     }
 
 

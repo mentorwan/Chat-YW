@@ -37,6 +37,9 @@
     <form class="tabcontent">
          <button type="submit" class="tablink" onclick="openTab('button4')" id="button4" value="button4">STOCK</button>
     </form>
+    <form class="tabcontent">
+         <button type="submit" class="tablink" onclick="openTab('button5')" id="button5" value="button5">AP STAT</button>
+    </form>
 </div>
 
 <section class="msger" id="msger">

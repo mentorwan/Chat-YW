@@ -329,6 +329,10 @@ body {
   display: block;
 }
 
+#tab5 {
+  display: block;
+}
+
 #menu-btn {
   background-color: royalblue;
   color: #fff;
