@@ -1,5 +1,10 @@
 <?php
 
+header('Content-Type: text/event-stream');
+header('Cache-Control: no-cache');
+header('Connection: keep-alive');
+
+
 require __DIR__ . '/vendor/autoload.php'; // remove this line if you use a PHP Framework.
 
 use Orhanerday\OpenAi\OpenAi;
@@ -24,30 +29,45 @@ $assistant_prompt = $_GET['assistant_prompt'];
 $open_ai_model = $_GET['open_ai_model'];
 
 
-// Retrieve the data in ascending order by the id column
-$results = $db->query('SELECT * FROM main.chat_history ORDER BY id ASC');
-    $history[] = [ROLE => SYS, CONTENT => $system_prompt];
+
+if (isset($_GET['question'])) {
+    $new_question = $_GET['question'];
+    // Get the last 5 messages from the database
     
-    while ($row = $results->fetchArray()) {
-        $history[] = [ROLE => USER, CONTENT => $row['human']];
-        //$history[] = [ROLE => ASSISTANT, CONTENT => $row['ai']];
-        $history[] = [ROLE => ASSISTANT, CONTENT => $assistant_prompt];
+    $stmt = $db->prepare('SELECT id, human, ai FROM main.chat_history ORDER BY id DESC LIMIT 5'); // Adjust the LIMIT value based on how much conversation history you want to fetch
+
+    $result = $stmt->execute();
+    $history = [];
+
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    $history[] = $row;
     }
 
+    $messages = [];
 
+    foreach (array_reverse($history) as $row) {
+    $messages[] = ['role' => 'user', 'content' => $row['human']];
+    $messages[] = ['role' => 'assistant', 'content' => $row['ai']];
+    }
+
+    $messages[] = ['role' => 'user', 'content' => $new_question];
+
+    
+
+}
 // Prepare a SELECT statement to retrieve the 'human' field of the row with ID 6
-$stmt = $db->prepare('SELECT human FROM main.chat_history WHERE id = :id');
-$stmt->bindValue(':id', $chat_history_id, SQLITE3_INTEGER);
+// $stmt = $db->prepare('SELECT human FROM main.chat_history WHERE id = :id');
+// $stmt->bindValue(':id', $chat_history_id, SQLITE3_INTEGER);
 
-// Execute the SELECT statement and retrieve the 'human' field
-$result = $stmt->execute();
-$msg = $result->fetchArray(SQLITE3_ASSOC)['human'];
+// // Execute the SELECT statement and retrieve the 'human' field
+// $result = $stmt->execute();
+// $msg = $result->fetchArray(SQLITE3_ASSOC)['human'];
 
-$history[] = [ROLE => USER, CONTENT => $msg];
+// $history[] = [ROLE => USER, CONTENT => $msg];
 
 $opts = [
    'model' =>  $open_ai_model,
-   'messages' => $history,
+   'messages' => $messages,
    'temperature' => 1,
    'max_tokens' => 1024,
    'frequency_penalty' => 0,

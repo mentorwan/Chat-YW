@@ -135,6 +135,7 @@ body {
   background-color: transparent;
   border: none;
   outline: none;
+  width:300px;
 }
 
 .msger-chat {

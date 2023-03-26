@@ -135,7 +135,7 @@ msgerForm.addEventListener("submit", event => {
     msgerInput.value = "";
  
     sendMsg(msgText,clickedButton);
-    if (clickedButton == 'button1'){
+    if (clickedButton == 'button5'){
         console.log(msgText);
     }
 
@@ -219,9 +219,15 @@ function sendMsg(msg, clickedButton) {
                     break;
             }
                    
+            //const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
+            //&system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
+            //&open_ai_model=${encodeURIComponent(open_ai_model)}`);
+            //console.log(msg)
+            
             const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
             &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
-            &open_ai_model=${encodeURIComponent(open_ai_model)}`);
+            &open_ai_model=${encodeURIComponent(open_ai_model)}&question=${encodeURIComponent(msg)}`
+              );
             
 
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);

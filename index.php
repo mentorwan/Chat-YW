@@ -15,6 +15,7 @@ while ($row = $result->fetchArray()) {
 
 // Close the database connection
 $db->close();
+
 ?>
 
 
