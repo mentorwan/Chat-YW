@@ -45,7 +45,7 @@ body {
 
   .msger-header-title {
     display: block;
-    margin-right: -30%;
+    margin-right: -20%;
   }
   
   .msger-header-options1 {
@@ -374,6 +374,11 @@ body {
 #tab5 {
   display: block;
 }
+
+#tab6 {
+  display: block;
+}
+
 
 #menu-btn {
   background-color: royalblue;

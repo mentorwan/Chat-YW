@@ -123,6 +123,11 @@ Button5.addEventListener('click',event => {
     event.preventDefault();
     clickedButton = 'button5';
 })
+const Button6 = document.querySelector("#button6");
+Button6.addEventListener('click',event => {
+    event.preventDefault();
+    clickedButton = 'button6';
+})
 
 
 msgerForm.addEventListener("submit", event => {
@@ -217,7 +222,12 @@ function sendMsg(msg, clickedButton) {
                     system_prompt = "You are AP Statistics teacher, you want to test your student learning capabilities on AP Statistics problems.";
                     assistant_prompt = "Give me a question in AP Statistics test format.";
                     break;
-            }
+                case 'button6':
+                    system_prompt = "You are 9th grade English/Biology/History/Chinese teacher, you want to test your student learning capabilities on 9th grade English/Biology/History/Chinese problems.";
+                    assistant_prompt = "Give me a question in 9th grade English/Biology/History/Chinese test format.";
+                    break;
+            }     
+            
                    
             //const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
             //&system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}

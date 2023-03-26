@@ -37,13 +37,14 @@ if (isset($_GET['question'])) {
     $stmt = $db->prepare('SELECT id, human, ai FROM main.chat_history ORDER BY id DESC LIMIT 5'); // Adjust the LIMIT value based on how much conversation history you want to fetch
 
     $result = $stmt->execute();
-    $history = [];
+    //$history = [];
 
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
     $history[] = $row;
     }
-
-    $messages = [];
+  
+    //$messages = [];
+    $messages[] = [ROLE => SYS, CONTENT => $system_prompt];
 
     foreach (array_reverse($history) as $row) {
     $messages[] = ['role' => 'user', 'content' => $row['human']];
@@ -51,6 +52,7 @@ if (isset($_GET['question'])) {
     }
 
     $messages[] = ['role' => 'user', 'content' => $new_question];
+    $messages[] = ['role' => 'user', 'content' => $assistant_prompt];
 
     
 

@@ -61,6 +61,9 @@ $db->close();
     <form class="tabcontent">
          <button type="submit" class="tablink" onclick="openTab('button5')" id="button5" value="button5">AP STAT</button>
     </form>
+    <form class="tabcontent">
+         <button type="submit" class="tablink" onclick="openTab('button6')" id="button6" value="button6">GRADE 9</button>
+    </form>
 </div>
 
 <section class="msger" id="msger">
@@ -72,7 +75,7 @@ $db->close();
             <button id="menu-btn">MODE</button>
       </div>
       <div class="msger-header-message">
-        <input type="text" class="header-text" value="<?php echo 'Questions Answered: ' . $numQuestionsAnswered; ?>">   
+        <input type="text" class="header-text" value="<?php echo 'Questions: ' . $numQuestionsAnswered; ?>">   
       </div>
       <div class="msger-header-options2">
             <button id="delete-button">Delete History</button>
