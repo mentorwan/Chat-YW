@@ -1,3 +1,23 @@
+<?php
+
+$db = new SQLite3('db.sqlite');
+
+$stmt = $db->prepare('SELECT * FROM main.chat_history');
+
+// Execute the query and get the results
+$result = $stmt->execute();
+
+// Count the number of rows returned
+$numQuestionsAnswered = 0;
+while ($row = $result->fetchArray()) {
+    $numQuestionsAnswered++;
+}
+
+// Close the database connection
+$db->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,18 +63,20 @@
 </div>
 
 <section class="msger" id="msger">
-    <header class="msger-header">
-        <div class="msger-header-title">
+    <div class="msger-header">
+      <div class="msger-header-title">
         <i class="fas fa-comment-alt"></i><input type="text" id="id" hidden> ChatGPT <span class="id_session"></span>
-        </div>
-        <div class="msger-header-options1">
+      </div>
+      <div class="msger-header-options1">
             <button id="menu-btn">MODE</button>
-        </div>
-        <div class="msger-header-options2">
+      </div>
+      <div class="msger-header-message">
+        <input type="text" class="header-text" value="<?php echo 'Questions Answered: ' . $numQuestionsAnswered; ?>">   
+      </div>
+      <div class="msger-header-options2">
             <button id="delete-button">Delete History</button>
-        </div>
-    </header>
-
+      </div>
+    </div>
     <main class="msger-chat">
     </main>
  

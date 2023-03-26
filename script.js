@@ -24,6 +24,7 @@ const BOT_NAME = "Assistant";
 const PERSON_NAME = "Client";
 const OPEN_AI_MODEL = "gpt-3.5-turbo";
 
+
 // Function to delete chat history records for a user ID using the API
 function deleteChatHistory(userId) {
     if (!confirm("Are you sure? Your Session and History will delete for good.")) {
