@@ -43,29 +43,35 @@ if (isset($_GET['question'])) {
     $history[] = $row;
     }
   
-    //$messages = [];
-    $messages[] = [ROLE => SYS, CONTENT => $system_prompt];
-
-    foreach (array_reverse($history) as $row) {
-    $messages[] = ['role' => 'user', 'content' => $row['human']];
-    $messages[] = ['role' => 'assistant', 'content' => $row['ai']];
+    // Add the assistant_prompt and the new_question to the $history array
+    if (isset($assistant_prompt) && !empty($assistant_prompt)) {
+        $history[] = ['human' => '', 'ai' => $assistant_prompt];
     }
 
-    $messages[] = ['role' => 'user', 'content' => $new_question];
-    $messages[] = ['role' => 'user', 'content' => $assistant_prompt];
+    //$history[] = ['human' => $new_question, 'ai' => ''];
 
     
+    // Reverse the history array
+    $reversed_history = array_reverse($history);
+
+    // Get the length of the reversed history array
+    $history_length = count($reversed_history);
+
+    // Iterate over the reversed history array and build the messages array
+    for ($i = 0; $i < $history_length-1; $i++) {
+        $row = $reversed_history[$i];
+
+        $messages[] = ['role' => 'user', 'content' => $row['human']];
+        $messages[] = ['role' => 'assistant', 'content' => $row['ai']];
+    }
+    
+    //last pair of messages
+    $messages[] = ['role' => 'system', 'content' => $system_prompt];
+    $messages[] = ['role' => 'assistant', 'content' => $assistant_prompt];
+    $messages[] = ['role' => 'user', 'content' => $new_question];
 
 }
-// Prepare a SELECT statement to retrieve the 'human' field of the row with ID 6
-// $stmt = $db->prepare('SELECT human FROM main.chat_history WHERE id = :id');
-// $stmt->bindValue(':id', $chat_history_id, SQLITE3_INTEGER);
 
-// // Execute the SELECT statement and retrieve the 'human' field
-// $result = $stmt->execute();
-// $msg = $result->fetchArray(SQLITE3_ASSOC)['human'];
-
-// $history[] = [ROLE => USER, CONTENT => $msg];
 
 $opts = [
    'model' =>  $open_ai_model,
