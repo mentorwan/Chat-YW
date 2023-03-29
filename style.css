@@ -1,5 +1,5 @@
 :root {
-  --body-bg: bisque;
+  --body-bg: rebeccaPurple;
   --msger-bg: slategrey;
   --border: 2px solid #1e1e1e;
   --left-msg-bg: mintcream;
@@ -44,8 +44,7 @@ body {
   }
 
   .msger-header-title {
-    display: block;
-    margin-right: -20%;
+    display: none;
   }
   
   .msger-header-options1 {
@@ -262,7 +261,7 @@ body {
   right: auto;
   top: 0;
   width: 120px; /* Set the sidbar width here */
-  background-color: bisque;
+  background-color: transparent;
   padding-top: 25px;
   overflow-x: hidden;
   height: inherit;
@@ -280,7 +279,7 @@ body {
     /*left: 0px; Set the sidebar width here */
     top: 0;
     width: 120px; /* Set the sidbar width here */
-    background-color: bisque;
+    background-color: transparent;
     padding-top: 25px;
     overflow-x: hidden;
     height: inherit;

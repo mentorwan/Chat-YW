@@ -45,7 +45,7 @@ $db->close();
 <body>
 
 <div class="sidebar" id="sidebar">
-  <p class="sidebar-header">MODE</p>
+  <p class="sidebar-header">GPT4</p>
     <form class="tabcontent">
          <button type="submit" class="tablink" onclick="openTab('button1')" id="button1" value="button1">CHAT ANYTHING</button>
     </form>
@@ -69,7 +69,7 @@ $db->close();
 <section class="msger" id="msger">
     <div class="msger-header">
       <div class="msger-header-title">
-        <i class="fas fa-comment-alt"></i><input type="text" id="id" hidden> ChatGPT <span class="id_session"></span>
+        <i class="fas fa-comment-alt"></i><input type="text" id="id" hidden><span class="id_session"></span>
       </div>
       <div class="msger-header-options1">
             <button id="menu-btn">MODE</button>

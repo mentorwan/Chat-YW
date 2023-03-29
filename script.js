@@ -22,7 +22,7 @@ const BOT_IMG = "./gpt.png";
 const PERSON_IMG = "./tauri.png";
 const BOT_NAME = "Assistant";
 const PERSON_NAME = "Client";
-const OPEN_AI_MODEL = "gpt-3.5-turbo";
+const OPEN_AI_MODEL = "gpt-4";
 
 
 // Function to delete chat history records for a user ID using the API
