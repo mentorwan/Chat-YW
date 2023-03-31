@@ -422,3 +422,15 @@ body {
   padding: 10px;
   border: 1px solid #ccc;
 }
+
+.copy-button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  }
+  
+.copy-button:hover {
+  background-color: #0056b3;
+}

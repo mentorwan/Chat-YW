@@ -161,20 +161,22 @@ function getHistory() {
 }
 
 function appendMessage(name, img, side, text, id) {
+    const buttonOrTimeHTML = side === 'left' ?
+        `<button class="copy-button" onclick="copyToClipboard(this)">Copy</button>` :
+        `<div class="msg-info-time">${formatDate(new Date())}</div>`;
     //   Simple solution for small apps
     const msgHTML = `
-    <div class="msg ${side}-msg">
-      <div class="msg-img" style="background-image: url(${img})"></div>
-      <div class="msg-bubble">
-        <div class="msg-info">
-          <div class="msg-info-name">${name}</div>
-          <div class="msg-info-time">${formatDate(new Date())}</div>
+        <div class="msg ${side}-msg">
+            <div class="msg-img" style="background-image: url(${img})"></div>
+            <div class="msg-bubble">
+                <div class="msg-info">
+                    <div class="msg-info-name">${name}</div>
+                    ${buttonOrTimeHTML}
+                </div>
+                <div class="msg-text" id="${id}">${text}</div>
+            </div>
         </div>
-
-        <div class="msg-text" id=${id}>${text}</div>
-      </div>
-    </div>
-  `;
+    `;
 
     msgerChat.insertAdjacentHTML("beforeend", msgHTML);
     
@@ -286,6 +288,24 @@ function sendMsg(msg, clickedButton) {
 // Utils
 function get(selector, root = document) {
     return root.querySelector(selector);
+}
+
+async function copyToClipboard(button) {
+    //const longResponse = button.previousElementSibling.innerTex
+    const msgBubble = button.parentElement.parentElement;
+    const msgText = msgBubble.querySelector('.msg-text');
+    const longResponse = msgText.innerText;
+    
+    try {
+        await navigator.clipboard.writeText(longResponse);
+        button.innerText = 'Copied!';
+        } catch (err) {
+        console.error('Failed to copy text: ', err);
+    }
+    
+    setTimeout(() => {
+    button.innerText = 'Copy';
+    }, 2000);
 }
 
 function formatDate(date) {
