@@ -160,31 +160,35 @@ function getHistory() {
         .catch(error => console.error(error));
 }
 
-function appendMessage(name, img, side, text, id) {
+function appendMessage(name, img, side, text, id, isWriting = false) {
     const buttonOrTimeHTML = side === 'left' ?
         `<button class="copybutton" id="copyButton" onclick="copyToClipboard(this)">Copy</button>` :
         `<div class="msg-info-time">${formatDate(new Date())}</div>`;
-    //   Simple solution for small apps
-    const msgHTML = `
-        <div class="msg ${side}-msg">
-            <div class="msg-img" style="background-image: url(${img})"></div>
-            <div class="msg-bubble">
-                <div class="msg-info">
-                    <div class="msg-info-name">${name}</div>
-                    ${buttonOrTimeHTML}
-                </div>
-                <div class="msg-text" id="${id}">${text}</div>
+
+    // Create the message element
+    const messageContainer = document.createElement('div');
+    messageContainer.classList.add('msg', `${side}-msg`);
+
+    messageContainer.innerHTML = `
+        <div class="msg-img" style="background-image: url(${img})"></div>
+        <div class="msg-bubble">
+            <div class="msg-info">
+                <div class="msg-info-name">${name}</div>
+                ${buttonOrTimeHTML}
             </div>
+            <div class="msg-text" id="${id}">${text}</div>
         </div>
     `;
 
-    msgerChat.insertAdjacentHTML("beforeend", msgHTML);
-    
+    // Add the writing-indicator class if isWriting is true
+    if (isWriting) {
+        messageContainer.querySelector('.msg-text').classList.add("writing-indicator");
+    }
+
+    // Append the message element to the msgerChat
+    msgerChat.appendChild(messageContainer);
+
     scrollToBottom();
-    
-    //console.log("scrollTop location:", msgerChat.scrollTop);
-    
-    
 }
 
 
@@ -262,12 +266,35 @@ function sendMsg(msg, clickedButton) {
             }
             
 
-            appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
+            // Store the UUID of the writing indicator message
+            let writingIndicatorUUID;
+
+            // Show the writing indicator message
+            function showWritingIndicator(uuid) {
+                writingIndicatorUUID = uuid;
+                appendMessage(BOT_NAME, BOT_IMG, "left", "Writing...", writingIndicatorUUID, true);
+            }
+
+            // Remove the writing indicator message
+            function removeWritingIndicator(uuid) {
+                const writingIndicator = document.getElementById(uuid);
+                if (writingIndicator) {
+                    writingIndicator.innerHTML = '';
+                }
+            }
+
+            showWritingIndicator(uuid);
+
+            //appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
             eventSource.onmessage = function (e) {
                 if (e.data == "[DONE]") {
                 	
+                    // Remove the writing indicator
+                    removeWritingIndicator(uuid);
+
+
                     let html = marked(accumulatedText);
 
                     // Apply custom CSS class to code blocks
@@ -289,6 +316,11 @@ function sendMsg(msg, clickedButton) {
                         // Set the innerHTML of the div to the formatted HTML
                         //div.innerHTML += joinedTxt;
                         accumulatedText += txt;
+                    }
+
+                     // Show the writing indicator if it's not already visible
+                    if (!writingIndicatorUUID) {
+                        showWritingIndicator(uuid);
                     }
                     
                 }

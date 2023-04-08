@@ -191,6 +191,12 @@ body {
   margin-bottom: 10px;
 }
 
+.msg-text ol,
+.msg-text ul{
+  margin-left: 0;
+  padding-left: 1em;
+}
+
 .msg-info-name {
   margin-right: 10px;
   font-weight: bold;
@@ -437,4 +443,8 @@ code.custom-code {
   
 .copy-button:hover {
   background-color: #0056b3;
+}
+
+.writing-indicator .msg-text {
+  color: #aaa;
 }
