@@ -42,6 +42,7 @@ $db->close();
   gtag('config', 'G-85F61RZYRT');
 </script>
 
+
 <body>
 
 <div class="sidebar" id="sidebar">
@@ -108,6 +109,8 @@ function openTab(tabName) {
   document.getElementById(tabName).className += " active";
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/marked@3.0.8/lib/marked.min.js"></script>
+
 
 
 </body>

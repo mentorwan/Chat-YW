@@ -162,7 +162,7 @@ function getHistory() {
 
 function appendMessage(name, img, side, text, id) {
     const buttonOrTimeHTML = side === 'left' ?
-        `<button class="copy-button" onclick="copyToClipboard(this)">Copy</button>` :
+        `<button class="copybutton" id="copyButton" onclick="copyToClipboard(this)">Copy</button>` :
         `<div class="msg-info-time">${formatDate(new Date())}</div>`;
     //   Simple solution for small apps
     const msgHTML = `
@@ -191,10 +191,15 @@ function appendMessage(name, img, side, text, id) {
 function sendMsg(msg, clickedButton) {
     msgerSendBtn.disabled = true
     var formData = new FormData();
+    
+
     var system_prompt = "You are a helpful assistant.";
     var assistant_prompt = "You can answer any questions.";
     formData.append('msg', msg);
     formData.append('user_id', USER_ID);
+
+
+
    
         fetch('/send-message.php', {method: 'POST', body: formData})
         .then(response => response.json())
@@ -241,19 +246,49 @@ function sendMsg(msg, clickedButton) {
             &open_ai_model=${encodeURIComponent(open_ai_model)}&question=${encodeURIComponent(msg)}`
               );
             
+            let accumulatedText = '';
+
+            function customizeCodeBlocks(html) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const codeBlocks = doc.querySelectorAll('pre > code');
+            
+                codeBlocks.forEach(codeBlock => {
+                    codeBlock.parentElement.classList.add('custom-code');
+                    codeBlock.classList.add('custom-code');
+                });
+            
+                return doc.body.innerHTML;
+            }
+            
 
             appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
             const div = document.getElementById(uuid);
             
             eventSource.onmessage = function (e) {
                 if (e.data == "[DONE]") {
-                	  msgerChat.scrollTop = msgerChat.scrollHeight;
+                	
+                    let html = marked(accumulatedText);
+
+                    // Apply custom CSS class to code blocks
+                    html = customizeCodeBlocks(html);
+
+
+                    div.innerHTML += html;
+
+                    accumulatedText ='';
+
+                    
+                    msgerChat.scrollTop = msgerChat.scrollHeight;
                     msgerSendBtn.disabled = false
                     eventSource.close();
                 } else {
                     let txt = JSON.parse(e.data).choices[0].delta.content
                     if (txt !== undefined) {
-                        div.innerHTML += txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                        //const joinedTxt = txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                        // Set the innerHTML of the div to the formatted HTML
+                        //div.innerHTML += joinedTxt;
+                        accumulatedText += txt;
                     }
                     
                 }
@@ -282,6 +317,16 @@ function sendMsg(msg, clickedButton) {
 
 }
 
+function loadScript(url) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = url;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+  
 
 
 
@@ -289,6 +334,17 @@ function sendMsg(msg, clickedButton) {
 function get(selector, root = document) {
     return root.querySelector(selector);
 }
+
+// document.getElementById('copyButton').addEventListener('click', async () => {
+//     const longResponse = 'Your long text to be copied to clipboard';
+    
+//     try {
+//     await navigator.clipboard.writeText(longResponse);
+//     console.log('Text copied to clipboard');
+//     } catch (err) {
+//     console.error('Failed to copy text: ', err);
+//     }
+//     });
 
 async function copyToClipboard(button) {
     //const longResponse = button.previousElementSibling.innerTex
