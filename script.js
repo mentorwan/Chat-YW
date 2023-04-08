@@ -17,11 +17,13 @@ const msgerSendBtn = get(".msger-send-btn");
 
 
 // Icons made by Freepik from www.flaticon.com
-const BOT_IMG = "./gpt.png";
+//const BOT_IMG = "./gpt.png";
+const BOT_IMG = "./gpt4.png"
+
 //const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
 const PERSON_IMG = "./tauri.png";
-const BOT_NAME = "Assistant";
-const PERSON_NAME = "Client";
+const BOT_NAME = "AI";
+const PERSON_NAME = "ME";
 const OPEN_AI_MODEL = "gpt-4";
 
 
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const content = document.getElementById('msger');
 
     //content.classList.add('msger-collapsed');
-
+    
     if (!content) {
         console.error('Element with ID "msger" not found');
         return;
@@ -72,6 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
             content.style.width = '250%';
         }
     });
+
+    // Call the loadMessages function to load and display messages from localStorage
+    //loadMessages();
     
 });
 
@@ -191,6 +196,23 @@ function appendMessage(name, img, side, text, id, isWriting = false) {
     scrollToBottom();
 }
 
+function saveMessage(id, formattedHtml) {
+    let messages = JSON.parse(localStorage.getItem('messages')) || [];
+    messages.push({ id, formattedHtml });
+    localStorage.setItem('messages', JSON.stringify(messages));
+}
+
+
+function loadMessages() {
+    let messages = JSON.parse(localStorage.getItem('messages')) || [];
+    messages.forEach(message => {
+        appendMessage(BOT_NAME, BOT_IMG, "left", "", message.id);
+        const div = document.getElementById(message.id);
+        div.innerHTML = message.formattedHtml;
+    });
+}
+
+
 
 function sendMsg(msg, clickedButton) {
     msgerSendBtn.disabled = true
@@ -205,147 +227,162 @@ function sendMsg(msg, clickedButton) {
 
 
    
-        fetch('/send-message.php', {method: 'POST', body: formData})
-        .then(response => response.json())
-        .then(data => {
-            let uuid = uuidv4();
-            let open_ai_model = OPEN_AI_MODEL;
+    fetch('/send-message.php', {method: 'POST', body: formData})
+    .then(response => response.json())
+    .then(data => {
+        let uuid = uuidv4();
+        let open_ai_model = OPEN_AI_MODEL;
 
 
-            switch(clickedButton) {
-                case 'button1':
-                    system_prompt = "You are a helpful assistant.";
-                    assistant_prompt = "You can answer any questions.";
-                    break;
-                case 'button2':
-                    system_prompt = "You are a grammar analyzer and fixer.";
-                    assistant_prompt = "Fix the grammar in the original text using English without providing an explanation.";
-                    break;
-                case 'button3':
-                    system_prompt = "You are a translation engine that can only translate text and cannot interpret it.";
-                    assistant_prompt = "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments.";
-                    break;
-                case 'button4':
-                    system_prompt = "You are a stock market guru with experience in understanding charts using technical analysis tools, while interpreting the macroeconomic environment prevailing across the world. Please provide clear verdicts and inform short-term predictions.";
-                    assistant_prompt = "What currently is the best way to invest money for short-term prospective?";
-                    break;
-                case 'button5':
-                    system_prompt = "You are AP Statistics teacher, you want to test your student learning capabilities on AP Statistics problems.";
-                    assistant_prompt = "Give me a question in AP Statistics test format.";
-                    break;
-                case 'button6':
-                    system_prompt = "You are 9th grade English/Biology/History/Chinese teacher, you want to test your student learning capabilities on 9th grade English/Biology/History/Chinese problems.";
-                    assistant_prompt = "Give me a question in 9th grade English/Biology/History/Chinese test format.";
-                    break;
-            }     
-            
-                   
-            //const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
-            //&system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
-            //&open_ai_model=${encodeURIComponent(open_ai_model)}`);
-            //console.log(msg)
-            
-            const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
-            &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
-            &open_ai_model=${encodeURIComponent(open_ai_model)}&question=${encodeURIComponent(msg)}`
-              );
-            
-            let accumulatedText = '';
+        switch(clickedButton) {
+            case 'button1':
+                system_prompt = "You are a helpful assistant.";
+                assistant_prompt = "You can answer any questions.";
+                break;
+            case 'button2':
+                system_prompt = "You are a grammar analyzer and fixer.";
+                assistant_prompt = "Fix the grammar in the original text using English without providing an explanation.";
+                break;
+            case 'button3':
+                system_prompt = "You are a translation engine that can only translate text and cannot interpret it.";
+                assistant_prompt = "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments.";
+                break;
+            case 'button4':
+                system_prompt = "You are a stock market guru with experience in understanding charts using technical analysis tools, while interpreting the macroeconomic environment prevailing across the world. Please provide clear verdicts and inform short-term predictions.";
+                assistant_prompt = "What currently is the best way to invest money for short-term prospective?";
+                break;
+            case 'button5':
+                system_prompt = "You are AP Statistics teacher, you want to test your student learning capabilities on AP Statistics problems.";
+                assistant_prompt = "Give me a question in AP Statistics test format.";
+                break;
+            case 'button6':
+                system_prompt = "You are 9th grade English/Biology/History/Chinese teacher, you want to test your student learning capabilities on 9th grade English/Biology/History/Chinese problems.";
+                assistant_prompt = "Give me a question in 9th grade English/Biology/History/Chinese test format.";
+                break;
+        }     
+                     
+        const eventSource = new EventSource(`/event-stream.php?chat_history_id=${data.id}&id=${encodeURIComponent(USER_ID)}
+        &system_prompt=${encodeURIComponent(system_prompt)}&assistant_prompt=${encodeURIComponent(assistant_prompt)}
+        &open_ai_model=${encodeURIComponent(open_ai_model)}&question=${encodeURIComponent(msg)}`
+            );
+        
+        let accumulatedText = '';
 
-            function customizeCodeBlocks(html) {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const codeBlocks = doc.querySelectorAll('pre > code');
-            
-                codeBlocks.forEach(codeBlock => {
-                    codeBlock.parentElement.classList.add('custom-code');
-                    codeBlock.classList.add('custom-code');
-                });
-            
-                return doc.body.innerHTML;
+        function customizeCodeBlocks(html) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const codeBlocks = doc.querySelectorAll('pre > code');
+        
+            codeBlocks.forEach(codeBlock => {
+                codeBlock.parentElement.classList.add('custom-code');
+                codeBlock.classList.add('custom-code');
+            });
+        
+            return doc.body.innerHTML;
+        }
+        
+
+        // Store the UUID of the writing indicator message
+        let writingIndicatorUUID;
+        let messageComplete = false;
+
+        // Show the writing indicator message
+        function showWritingIndicator(uuid) {
+            writingIndicatorUUID = uuid;
+            appendMessage(BOT_NAME, BOT_IMG, "left", "Writing...", writingIndicatorUUID, true);
+        }
+
+        // Update the writing indicator message
+        function updateWritingIndicator(uuid) {
+            const writingIndicator = document.getElementById(uuid);
+            if (writingIndicator) {
+                writingIndicator.innerHTML += '.';
             }
-            
+        }
 
-            // Store the UUID of the writing indicator message
-            let writingIndicatorUUID;
-
-            // Show the writing indicator message
-            function showWritingIndicator(uuid) {
-                writingIndicatorUUID = uuid;
-                appendMessage(BOT_NAME, BOT_IMG, "left", "Writing...", writingIndicatorUUID, true);
+        // Remove the writing indicator message
+        function removeWritingIndicator(uuid) {
+            const writingIndicator = document.getElementById(uuid);
+            if (writingIndicator) {
+                writingIndicator.innerHTML = '';
             }
+        }
 
-            // Remove the writing indicator message
-            function removeWritingIndicator(uuid) {
-                const writingIndicator = document.getElementById(uuid);
-                if (writingIndicator) {
-                    writingIndicator.innerHTML = '';
+        showWritingIndicator(uuid);
+
+        //appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
+        const div = document.getElementById(uuid);
+
+        function checkWritingStatus() {
+            setTimeout(() => {
+                if (!eventSource.closed && !messageComplete) {
+                    // Update the writing indicator
+                    updateWritingIndicator(uuid);
+                    checkWritingStatus();
                 }
-            }
-
-            showWritingIndicator(uuid);
-
-            //appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
-            const div = document.getElementById(uuid);
-            
-            eventSource.onmessage = function (e) {
-                if (e.data == "[DONE]") {
-                	
-                    // Remove the writing indicator
-                    removeWritingIndicator(uuid);
-
-
-                    let html = marked(accumulatedText);
-
-                    // Apply custom CSS class to code blocks
-                    html = customizeCodeBlocks(html);
-
-
-                    div.innerHTML += html;
-
-                    accumulatedText ='';
-
-                    
-                    msgerChat.scrollTop = msgerChat.scrollHeight;
-                    msgerSendBtn.disabled = false
-                    eventSource.close();
-                } else {
-                    let txt = JSON.parse(e.data).choices[0].delta.content
-                    if (txt !== undefined) {
-                        //const joinedTxt = txt.replace(/(?:\r\n|\r|\n)/g, '<br>');
-                        // Set the innerHTML of the div to the formatted HTML
-                        //div.innerHTML += joinedTxt;
-                        accumulatedText += txt;
-                    }
-
-                     // Show the writing indicator if it's not already visible
-                    if (!writingIndicatorUUID) {
-                        showWritingIndicator(uuid);
-                    }
-                    
-                }
-            };
-            eventSource.onerror = function (e) {
-                msgerSendBtn.disabled = false
-                console.error('Error event:', e);
-
-
-                // Send an AJAX request to clear the database
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'clear_database.php', true);
-                xhr.send();
+            }, 5000);
+        }
+        
+        checkWritingStatus();
+        
+        eventSource.onmessage = function (e) {
+            if (e.data == "[DONE]") {
                 
-                if (e.target.readyState === EventSource.CLOSED) {
-                        console.error('EventSource connection closed.');
-                } else if (e.target.readyState === EventSource.CONNECTING) {
-                        console.error('EventSource connection reconnecting.');
-                } else if (e.target.readyState === EventSource.OPEN) {
-                console.error('EventSource connection open, but an error occurred.');
-                }
+                messageComplete = true;
+                // Remove the writing indicator
+                removeWritingIndicator(uuid);
+                let html = marked(accumulatedText);
+
+                // Apply custom CSS class to code blocks
+                html = customizeCodeBlocks(html);
+                div.innerHTML += html;
+
+                // Save the formatted message to localStorage
+                saveMessage(uuid, html);
+
+                accumulatedText ='';
+
+                
+                msgerChat.scrollTop = msgerChat.scrollHeight;
+                msgerSendBtn.disabled = false
                 eventSource.close();
-            };
-        })
-        .catch(error => console.error(error));
+            } else {
+                let txt = JSON.parse(e.data).choices[0].delta.content
+                if (txt !== undefined) {
+                    accumulatedText += txt;
+                }
+
+                    // Show the writing indicator if it's not already visible
+                if (!writingIndicatorUUID) {
+                    showWritingIndicator(uuid);
+                }
+                
+            }
+        
+        };
+        eventSource.onerror = function (e) {
+            msgerSendBtn.disabled = false
+            console.error('Error event:', e);
+
+
+            // Send an AJAX request to clear the database
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'clear_database.php', true);
+            xhr.send();
+            
+            if (e.target.readyState === EventSource.CLOSED) {
+                    console.error('EventSource connection closed.');
+            } else if (e.target.readyState === EventSource.CONNECTING) {
+                    console.error('EventSource connection reconnecting.');
+            } else if (e.target.readyState === EventSource.OPEN) {
+            console.error('EventSource connection open, but an error occurred.');
+            }
+            eventSource.close();
+        };
+
+    })
+    .catch(error => console.error(error));
+    
 
 }
 
