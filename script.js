@@ -21,9 +21,11 @@ const msgerSendBtn = get(".msger-send-btn");
 const BOT_IMG = "./gpt4.png"
 
 //const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
-const PERSON_IMG = "./tauri.png";
-const BOT_NAME = "AI";
-const PERSON_NAME = "ME";
+const PERSON_IMG = "https://api.dicebear.com/6.x/fun-emoji/svg?seed=Sophie&backgroundColor=059ff2,f6d594,fcbc34&backgroundType=solid,gradientLinear&eyes=love&mouth=drip,plain,sad,smileTeeth,smileLol,wideSmile,cute,shout";
+//const PERSON_IMG = "./tauri.png";
+//const PERSON_IMG = "";
+const BOT_NAME = "GPT4";
+const PERSON_NAME = "";
 const OPEN_AI_MODEL = "gpt-4";
 
 
