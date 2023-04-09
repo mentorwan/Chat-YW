@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sideDrawer = document.getElementById('sidebar');
     const content = document.getElementById('msger');
 
+
     //content.classList.add('msger-collapsed');
     
     if (!content) {
@@ -142,7 +143,7 @@ msgerForm.addEventListener("submit", event => {
 
     const msgText = msgerInput.value;
     if (!msgText) return;
-    
+
     appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
     msgerInput.value = "";
  
@@ -168,8 +169,12 @@ function getHistory() {
 }
 
 function appendMessage(name, img, side, text, id, isWriting = false) {
+    //const buttonOrTimeHTML = side === 'left' ?
+    //    `<button class="copybutton" id="copyButton" onclick="copyToClipboard(this)">Copy</button>` :
+    //    `<div class="msg-info-time">${formatDate(new Date())}</div>`;
+
     const buttonOrTimeHTML = side === 'left' ?
-        `<button class="copybutton" id="copyButton" onclick="copyToClipboard(this)">Copy</button>` :
+        `<div id="copyButton" class="copyButton actionButton"><img src="file-copy-line.png" alt="Copy to clipboard" /></div>` :
         `<div class="msg-info-time">${formatDate(new Date())}</div>`;
 
     // Create the message element
@@ -187,16 +192,34 @@ function appendMessage(name, img, side, text, id, isWriting = false) {
         </div>
     `;
 
+    //document.getElementById('copyButton').addEventListener('click', handleCopyClick);
+
+
     // Add the writing-indicator class if isWriting is true
     if (isWriting) {
         messageContainer.querySelector('.msg-text').classList.add("writing-indicator");
     }
 
     // Append the message element to the msgerChat
-    msgerChat.appendChild(messageContainer);
+    msgerChat.appendChild(messageContainer);  
 
     scrollToBottom();
 }
+
+function initializeCopyButton() {
+    const copyButton = document.getElementById('copyButton');
+    if (copyButton) {
+      copyButton.addEventListener('click', handleCopyClick);
+      console.log("Copy button clicked");
+    }
+  }
+
+function handleCopyClick(event) {
+    const button = event.target.closest('.actionButton');
+    copyToClipboard(button);
+  }
+  
+
 
 function saveMessage(id, formattedHtml) {
     let messages = JSON.parse(localStorage.getItem('messages')) || [];
@@ -313,6 +336,9 @@ function sendMsg(msg, clickedButton) {
         showWritingIndicator(uuid);
 
         //appendMessage(BOT_NAME, BOT_IMG, "left", "", uuid);
+
+        // Initialize the copy button's event listener
+        //initializeCopyButton();
         const div = document.getElementById(uuid);
 
         function checkWritingStatus() {
@@ -344,6 +370,13 @@ function sendMsg(msg, clickedButton) {
 
                 accumulatedText ='';
 
+                msgerChat.addEventListener('click', (event) => {
+                    if (event.target.closest('.copyButton')) {
+                      handleCopyClick(event);
+                      console.log("Line 376 Copy button clicked");
+                    }
+                  });
+                
                 
                 msgerChat.scrollTop = msgerChat.scrollHeight;
                 msgerSendBtn.disabled = false
@@ -417,23 +450,41 @@ function get(selector, root = document) {
 //     }
 //     });
 
-async function copyToClipboard(button) {
-    //const longResponse = button.previousElementSibling.innerTex
-    const msgBubble = button.parentElement.parentElement;
+function copyToClipboard(Button){ 
+    const msgBubble = Button.parentElement.parentElement;
     const msgText = msgBubble.querySelector('.msg-text');
     const longResponse = msgText.innerText;
-    
+
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.value = longResponse;
+
+    tempTextArea.style.position = 'fixed';
+    tempTextArea.style.left = '-9999px';
+    document.body.appendChild(tempTextArea);
+
+    tempTextArea.select();
+    tempTextArea.setSelectionRange(0, 99999);
+
     try {
-        await navigator.clipboard.writeText(longResponse);
-        button.innerText = 'Copied!';
-        } catch (err) {
+        const successful = document.execCommand('copy'); //Store result in a variable
+
+        if (successful) {
+            Button.classList.add('copied');
+        } else {
+            throw new Error('Browser did not support copying'); //Throw an error if result is not successful
+        }
+    } catch (err) {
         console.error('Failed to copy text: ', err);
     }
-    
+
+    document.body.removeChild(tempTextArea);
+
     setTimeout(() => {
-    button.innerText = 'Copy';
+        Button.classList.remove('copied');
     }, 2000);
 }
+
+
 
 function formatDate(date) {
     const h = "0" + date.getHours();
