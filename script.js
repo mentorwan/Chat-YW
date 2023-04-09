@@ -373,7 +373,7 @@ function sendMsg(msg, clickedButton) {
                 msgerChat.addEventListener('click', (event) => {
                     if (event.target.closest('.copyButton')) {
                       handleCopyClick(event);
-                      console.log("Line 376 Copy button clicked");
+                      //console.log("Line 376 Copy button clicked");
                     }
                   });
                 
@@ -439,16 +439,6 @@ function get(selector, root = document) {
     return root.querySelector(selector);
 }
 
-// document.getElementById('copyButton').addEventListener('click', async () => {
-//     const longResponse = 'Your long text to be copied to clipboard';
-    
-//     try {
-//     await navigator.clipboard.writeText(longResponse);
-//     console.log('Text copied to clipboard');
-//     } catch (err) {
-//     console.error('Failed to copy text: ', err);
-//     }
-//     });
 
 function copyToClipboard(Button){ 
     const msgBubble = Button.parentElement.parentElement;
@@ -465,14 +455,19 @@ function copyToClipboard(Button){
     tempTextArea.select();
     tempTextArea.setSelectionRange(0, 99999);
 
+    const imgElement = Button.querySelector('img');
+
     try {
         const successful = document.execCommand('copy'); //Store result in a variable
 
         if (successful) {
-            Button.classList.add('copied');
-        } else {
-            throw new Error('Browser did not support copying'); //Throw an error if result is not successful
-        }
+            imgElement.src = 'file-copy-fill.png';
+            setTimeout(() => {
+              imgElement.src = 'file-copy-line.png';
+            }, 4000);
+          } else {
+            throw new Error('Browser did not support copying');
+          }
     } catch (err) {
         console.error('Failed to copy text: ', err);
     }
