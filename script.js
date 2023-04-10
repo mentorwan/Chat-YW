@@ -23,7 +23,6 @@ const BOT_IMG = "./gpt4.png"
 //const PERSON_IMG = "https://api.dicebear.com/5.x/micah/svg?seed=" + document.getElementById("id").value
 const PERSON_IMG = "https://api.dicebear.com/6.x/fun-emoji/svg?seed=Sophie&backgroundColor=059ff2,f6d594,fcbc34&backgroundType=solid,gradientLinear&eyes=love&mouth=drip,plain,sad,smileTeeth,smileLol,wideSmile,cute,shout";
 //const PERSON_IMG = "./tauri.png";
-//const PERSON_IMG = "";
 const BOT_NAME = "GPT4";
 const PERSON_NAME = "";
 const OPEN_AI_MODEL = "gpt-4";
@@ -44,6 +43,7 @@ function deleteChatHistory(userId) {
             throw new Error('Error deleting chat history: ' + response.statusText);
         }
         deleteAllCookies()
+        localStorage.removeItem('messages'); // Clear local storage
         location.reload(); // Reload the page to update the chat history table
     })
     .catch(error => console.error(error));
@@ -80,6 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Call the loadMessages function to load and display messages from localStorage
     //loadMessages();
+    applyMarkdownFormatting();
+
+    // Add event listeners for window resize and DOMContentLoaded
+    window.addEventListener('resize', applyMarkdownFormatting);
+    window.addEventListener('DOMContentLoaded', applyMarkdownFormatting);
     
 });
 
@@ -160,19 +165,18 @@ function getHistory() {
     fetch('/api.php', {method: 'POST', body: formData})
         .then(response => response.json())
         .then(chatHistory => {
+            console.log("Complete chat history:", chatHistory); 
             for (const row of chatHistory) {
                 appendMessage(PERSON_NAME, PERSON_IMG, "right", row.human);
                 appendMessage(BOT_NAME, BOT_IMG, "left", row.ai, "");
+                console.log("Line 171:",row.ai);
             }
         })
         .catch(error => console.error(error));
 }
 
 function appendMessage(name, img, side, text, id, isWriting = false) {
-    //const buttonOrTimeHTML = side === 'left' ?
-    //    `<button class="copybutton" id="copyButton" onclick="copyToClipboard(this)">Copy</button>` :
-    //    `<div class="msg-info-time">${formatDate(new Date())}</div>`;
-
+  
     const buttonOrTimeHTML = side === 'left' ?
         `<div id="copyButton" class="copyButton actionButton"><img src="file-copy-line.png" alt="Copy to clipboard" /></div>` :
         `<div class="msg-info-time">${formatDate(new Date())}</div>`;
@@ -181,6 +185,8 @@ function appendMessage(name, img, side, text, id, isWriting = false) {
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('msg', `${side}-msg`);
 
+    console.log("Line 185:",text);
+    
     messageContainer.innerHTML = `
         <div class="msg-img" style="background-image: url(${img})"></div>
         <div class="msg-bubble">
@@ -200,7 +206,10 @@ function appendMessage(name, img, side, text, id, isWriting = false) {
         messageContainer.querySelector('.msg-text').classList.add("writing-indicator");
     }
 
+    
     // Append the message element to the msgerChat
+
+    console.log("Line 209:",messageContainer);
     msgerChat.appendChild(messageContainer);  
 
     scrollToBottom();
@@ -237,6 +246,32 @@ function loadMessages() {
     });
 }
 
+
+function applyMarkdownFormatting() {
+  //console.log('Applying markdown formatting...')
+  const formattedTexts = document.querySelectorAll('.formatted');
+  formattedTexts.forEach((formattedText) => {
+    const textContent = formattedText.textContent;
+    //console.log("Line 245 Text content: " + textContent);
+    const html = marked(textContent);
+    const updatedHtml = customizeCodeBlocks(html);
+    formattedText.innerHTML = updatedHtml;
+  });
+}
+
+
+function customizeCodeBlocks(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const codeBlocks = doc.querySelectorAll('pre > code');
+
+    codeBlocks.forEach(codeBlock => {
+        codeBlock.parentElement.classList.add('custom-code');
+        codeBlock.classList.add('custom-code');
+    });
+
+    return doc.body.innerHTML;
+}
 
 
 function sendMsg(msg, clickedButton) {
@@ -292,19 +327,6 @@ function sendMsg(msg, clickedButton) {
             );
         
         let accumulatedText = '';
-
-        function customizeCodeBlocks(html) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const codeBlocks = doc.querySelectorAll('pre > code');
-        
-            codeBlocks.forEach(codeBlock => {
-                codeBlock.parentElement.classList.add('custom-code');
-                codeBlock.classList.add('custom-code');
-            });
-        
-            return doc.body.innerHTML;
-        }
         
 
         // Store the UUID of the writing indicator message
@@ -352,6 +374,8 @@ function sendMsg(msg, clickedButton) {
         }
         
         checkWritingStatus();
+
+
         
         eventSource.onmessage = function (e) {
             if (e.data == "[DONE]") {
@@ -363,7 +387,20 @@ function sendMsg(msg, clickedButton) {
 
                 // Apply custom CSS class to code blocks
                 html = customizeCodeBlocks(html);
+                
+                // div.classList.add('formatted');
+                // div.innerHTML += html;
+                // applyMarkdownFormatting();
+
+                div.classList.add('formatted');
                 div.innerHTML += html;
+
+                //console.log("Line 405: ", div.innerHTML);
+                
+                // Apply markdown formatting to the updated content
+                //applyMarkdownFormatting();
+
+                console.log("Line 410: ", div.innerHTML);
 
                 // Save the formatted message to localStorage
                 saveMessage(uuid, html);
@@ -373,7 +410,6 @@ function sendMsg(msg, clickedButton) {
                 msgerChat.addEventListener('click', (event) => {
                     if (event.target.closest('.copyButton')) {
                       handleCopyClick(event);
-                      //console.log("Line 376 Copy button clicked");
                     }
                   });
                 
@@ -393,8 +429,13 @@ function sendMsg(msg, clickedButton) {
                 }
                 
             }
-        
         };
+        
+        //document.addEventListener('DOMContentLoaded', applyMarkdownFormatting);
+        //window.addEventListener('load', applyMarkdownFormatting);
+
+        
+       
         eventSource.onerror = function (e) {
             msgerSendBtn.disabled = false
             console.error('Error event:', e);
@@ -418,21 +459,11 @@ function sendMsg(msg, clickedButton) {
     })
     .catch(error => console.error(error));
     
+    
 
 }
 
-function loadScript(url) {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = url;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
-  }
-  
-
-
+//window.addEventListener('resize', applyMarkdownFormatting);
 
 // Utils
 function get(selector, root = document) {
