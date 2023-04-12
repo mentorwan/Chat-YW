@@ -254,10 +254,19 @@ function loadAllMessages() {
     let botMessages = JSON.parse(localStorage.getItem('messages')) || [];
     let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
 
-    let allMessages = [...botMessages.map(msg => ({...msg, type: 'bot'})), ...userMessages.map(msg => ({...msg, type: 'user'}))];
+    let allMessages = [];
 
-    // Sort messages based on their IDs
-    allMessages.sort((a, b) => a.id - b.id);
+    let maxMessages = Math.max(botMessages.length, userMessages.length);
+
+    for (let i = 0; i < maxMessages; i++) {
+        if (userMessages[i]) {
+            allMessages.push({...userMessages[i], type: 'user'});
+        }
+
+        if (botMessages[i]) {
+            allMessages.push({...botMessages[i], type: 'bot'});
+        }
+    }
 
     allMessages.forEach(message => {
         if (message.type === 'user') {
@@ -271,6 +280,7 @@ function loadAllMessages() {
 
     applyMarkdownFormatting();
 }
+
 
 function applyMarkdownFormatting() {
   //console.log('Applying markdown formatting...')
