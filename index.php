@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['authenticated'])) {
+    header('Location: login.php');
+    exit;
+}
 
 $db = new SQLite3('db.sqlite');
 
