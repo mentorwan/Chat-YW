@@ -5,10 +5,10 @@ if (getCookie("id") == "") {
 } else {
     document.getElementById("id").value = getCookie("id");
 }
+
 const idSession = get(".id_session");
 const USER_ID = document.getElementById("id").value;
 idSession.textContent = USER_ID
-//getHistory()
 
 const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
@@ -42,14 +42,13 @@ function deleteChatHistory(userId) {
         if (!response.ok) {
             throw new Error('Error deleting chat history: ' + response.statusText);
         }
-        localStorage.removeItem('messages'); // Clear local storage
-        localStorage.removeItem('userMessages'); // Clear local storage
-        deleteAllCookies()
+        sessionStorage.removeItem('messages'); // Clear session storage
+        sessionStorage.removeItem('userMessages'); // Clear session storage
+        deleteAllCookies();
         location.reload(); // Reload the page to update the chat history table
     })
     .catch(error => console.error(error));
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const menuBtn = document.getElementById('menu-btn');
@@ -84,8 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
     applyMarkdownFormatting();
 
     // Add event listeners for window resize and DOMContentLoaded
-    window.addEventListener('resize', applyMarkdownFormatting);
-    window.addEventListener('DOMContentLoaded', applyMarkdownFormatting);
+    //window.addEventListener('resize', applyMarkdownFormatting);
+    //window.addEventListener('DOMContentLoaded', applyMarkdownFormatting);
     
 });
 
@@ -220,39 +219,41 @@ function appendMessage(name, img, side, text, id, isWriting = false) {
     scrollToBottom();
 }
 
-function initializeCopyButton() {
-    const copyButton = document.getElementById('copyButton');
-    if (copyButton) {
-      copyButton.addEventListener('click', handleCopyClick);
+function initializeCopyButtons() {
+    const copyButtons = document.querySelectorAll('.copyButton');
+    copyButtons.forEach((button) => {
+      button.addEventListener('click', handleCopyClick);
       console.log("Copy button clicked");
-    }
-  }
+    });
+}
 
 function handleCopyClick(event) {
-    const button = event.target.closest('.actionButton');
+    const button = event.target.closest('.copyButton');
+  
+    // Show a message or add an animation to indicate that the text has been copied
     copyToClipboard(button);
   }
   
 
 
 function saveMessage(id, formattedHtml) {
-    let messages = JSON.parse(localStorage.getItem('messages')) || [];
+    let messages = JSON.parse(sessionStorage.getItem('messages')) || [];
     messages.push({ id, formattedHtml });
-    localStorage.setItem('messages', JSON.stringify(messages));
+    sessionStorage.setItem('messages', JSON.stringify(messages));
 }
 
 function saveUserMessage(text) {
-    let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
+    let userMessages = JSON.parse(sessionStorage.getItem('userMessages')) || [];
     const id = Date.now().toString();
     userMessages.push({ text, id });
-    localStorage.setItem('userMessages', JSON.stringify(userMessages));
+    sessionStorage.setItem('userMessages', JSON.stringify(userMessages));
     return id;
 }
 
 
 function loadAllMessages() {
-    let botMessages = JSON.parse(localStorage.getItem('messages')) || [];
-    let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
+    let botMessages = JSON.parse(sessionStorage.getItem('messages')) || [];
+    let userMessages = JSON.parse(sessionStorage.getItem('userMessages')) || [];
 
     let allMessages = [];
 
@@ -279,6 +280,7 @@ function loadAllMessages() {
     });
 
     applyMarkdownFormatting();
+    initializeCopyButtons(); 
 }
 
 
