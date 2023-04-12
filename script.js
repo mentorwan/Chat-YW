@@ -131,17 +131,6 @@ Button4.addEventListener('click',event => {
     clickedButton = 'button4';
 })
 
-const Button5 = document.querySelector("#button5");
-Button5.addEventListener('click',event => {
-    event.preventDefault();
-    clickedButton = 'button5';
-})
-const Button6 = document.querySelector("#button6");
-Button6.addEventListener('click',event => {
-    event.preventDefault();
-    clickedButton = 'button6';
-})
-
 
 msgerForm.addEventListener("submit", event => {
     event.preventDefault();
@@ -155,9 +144,6 @@ msgerForm.addEventListener("submit", event => {
     msgerInput.value = "";
 
     sendMsg(msgText, clickedButton);
-    if (clickedButton == 'button5') {
-        console.log(msgText);
-    }
 });
 
 
@@ -347,14 +333,6 @@ function sendMsg(msg, clickedButton) {
             case 'button4':
                 system_prompt = "You are a stock market guru with experience in understanding charts using technical analysis tools, while interpreting the macroeconomic environment prevailing across the world. Please provide clear verdicts and inform short-term predictions.";
                 assistant_prompt = "What currently is the best way to invest money for short-term prospective?";
-                break;
-            case 'button5':
-                system_prompt = "You are AP Statistics teacher, you want to test your student learning capabilities on AP Statistics problems.";
-                assistant_prompt = "Give me a question in AP Statistics test format.";
-                break;
-            case 'button6':
-                system_prompt = "You are 9th grade English/Biology/History/Chinese teacher, you want to test your student learning capabilities on 9th grade English/Biology/History/Chinese problems.";
-                assistant_prompt = "Give me a question in 9th grade English/Biology/History/Chinese test format.";
                 break;
         }     
                      
