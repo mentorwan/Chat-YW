@@ -8,7 +8,7 @@ if (getCookie("id") == "") {
 const idSession = get(".id_session");
 const USER_ID = document.getElementById("id").value;
 idSession.textContent = USER_ID
-getHistory()
+//getHistory()
 
 const msgerForm = get(".msger-inputarea");
 const msgerInput = get(".msger-input");
@@ -42,8 +42,9 @@ function deleteChatHistory(userId) {
         if (!response.ok) {
             throw new Error('Error deleting chat history: ' + response.statusText);
         }
-        deleteAllCookies()
         localStorage.removeItem('messages'); // Clear local storage
+        localStorage.removeItem('userMessages'); // Clear local storage
+        deleteAllCookies()
         location.reload(); // Reload the page to update the chat history table
     })
     .catch(error => console.error(error));
@@ -79,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Call the loadMessages function to load and display messages from localStorage
-    //loadMessages();
+    loadAllMessages()
     applyMarkdownFormatting();
 
     // Add event listeners for window resize and DOMContentLoaded
@@ -149,15 +150,17 @@ msgerForm.addEventListener("submit", event => {
     const msgText = msgerInput.value;
     if (!msgText) return;
 
-    appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
+    const userId = saveUserMessage(msgText); // Save the user message
+    appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText, userId);
+
     msgerInput.value = "";
- 
-    sendMsg(msgText,clickedButton);
-    if (clickedButton == 'button5'){
+
+    sendMsg(msgText, clickedButton);
+    if (clickedButton == 'button5') {
         console.log(msgText);
     }
-
 });
+
 
 function getHistory() {
     var formData = new FormData();
@@ -186,6 +189,8 @@ function appendMessage(name, img, side, text, id, isWriting = false) {
     messageContainer.classList.add('msg', `${side}-msg`);
 
     console.log("Line 185:",text);
+
+    const formattedClass = side === 'right' ? 'formatted' : '';
     
     messageContainer.innerHTML = `
         <div class="msg-img" style="background-image: url(${img})"></div>
@@ -236,16 +241,36 @@ function saveMessage(id, formattedHtml) {
     localStorage.setItem('messages', JSON.stringify(messages));
 }
 
-
-function loadMessages() {
-    let messages = JSON.parse(localStorage.getItem('messages')) || [];
-    messages.forEach(message => {
-        appendMessage(BOT_NAME, BOT_IMG, "left", "", message.id);
-        const div = document.getElementById(message.id);
-        div.innerHTML = message.formattedHtml;
-    });
+function saveUserMessage(text) {
+    let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
+    const id = Date.now().toString();
+    userMessages.push({ text, id });
+    localStorage.setItem('userMessages', JSON.stringify(userMessages));
+    return id;
 }
 
+
+function loadAllMessages() {
+    let botMessages = JSON.parse(localStorage.getItem('messages')) || [];
+    let userMessages = JSON.parse(localStorage.getItem('userMessages')) || [];
+
+    let allMessages = [...botMessages.map(msg => ({...msg, type: 'bot'})), ...userMessages.map(msg => ({...msg, type: 'user'}))];
+
+    // Sort messages based on their IDs
+    allMessages.sort((a, b) => a.id - b.id);
+
+    allMessages.forEach(message => {
+        if (message.type === 'user') {
+            appendMessage(PERSON_NAME, PERSON_IMG, "right", message.text, message.id);
+        } else {
+            appendMessage(BOT_NAME, BOT_IMG, "left", "", message.id);
+            const div = document.getElementById(message.id);
+            div.innerHTML = message.formattedHtml;
+        }
+    });
+
+    applyMarkdownFormatting();
+}
 
 function applyMarkdownFormatting() {
   //console.log('Applying markdown formatting...')
