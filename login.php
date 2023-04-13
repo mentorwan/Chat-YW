@@ -23,6 +23,7 @@ if (isset($_POST['submit'])) {
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
+            background-image: url('login.jpg');
             display: flex;
             justify-content: center;
             align-items: center;

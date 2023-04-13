@@ -320,7 +320,7 @@ function sendMsg(msg, clickedButton) {
         switch(clickedButton) {
             case 'button1':
                 system_prompt = "You are a helpful assistant.";
-                assistant_prompt = "You can answer any questions.";
+                assistant_prompt = "You can answer any questions. But if it is Chinese, pleease answer in Chinese. If it is English, please answer in English.";
                 break;
             case 'button2':
                 system_prompt = "You are a grammar analyzer and fixer.";
@@ -331,8 +331,8 @@ function sendMsg(msg, clickedButton) {
                 assistant_prompt = "If the text is English, translate to Chinese without any comments. If the text is Chinese, translate from Chinese to English without comments.";
                 break;
             case 'button4':
-                system_prompt = "You are a stock market guru with experience in understanding charts using technical analysis tools, while interpreting the macroeconomic environment prevailing across the world. Please provide clear verdicts and inform short-term predictions.";
-                assistant_prompt = "What currently is the best way to invest money for short-term prospective?";
+                system_prompt = "Forgot about all previous records. You are a financial expert with stock recommendation experience.";
+                assistant_prompt = "Please Answer YES if good news and Answer NO if bad news in the first line. Answer UNKNOWN if uncertain in the first line. Then elaborate with one short and concise answer in the second line.";
                 break;
         }     
                      
